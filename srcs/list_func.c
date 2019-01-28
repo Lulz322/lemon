@@ -6,6 +6,14 @@
 #include "../includes/ft_printf.h"
 
 
+void    change_mode(t_rooms *qwe,int mode)
+{
+    while (qwe->next)
+        qwe = qwe->next;
+    qwe->mode = mode;
+}
+
+
 t_rooms  *create_elem(char *data, int x, int y)
 {
     t_rooms *new;
@@ -13,6 +21,8 @@ t_rooms  *create_elem(char *data, int x, int y)
     new = (t_rooms *)malloc(sizeof(t_rooms));
     new->name = ft_strdup(data);
     new->link = false;
+    new->mode = 0;
+    new->room_id = g_room_id++;
     new->x_coord = x;
     new->y_coord = y;
     new->next = NULL;
@@ -43,7 +53,7 @@ void print_data(t_rooms *begin)
         begin = begin->prev;
     while (begin)
     {
-        ft_printf("%s\n", begin->name);
+        ft_printf("MRED(%s (%d)) MGRN(%d %d   MODE : %d) MBLU(Link w/ %d\n", begin->name,begin->room_id, begin->x_coord, begin->y_coord, begin->mode, begin->link_with_id);
         begin = begin->next;
     }
     ft_printf("\n");

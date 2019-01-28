@@ -3,6 +3,7 @@
 
 int main()
 {
+	g_room_id = 1;
 	_ERROR_NOTIS(set_cvars());
 	return 0;
 }

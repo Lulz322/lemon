@@ -21,6 +21,7 @@ typedef struct  s_global
 
 t_global g_global;
 
+int g_room_id;
 
 typedef struct  s_rooms
 {
@@ -29,7 +30,10 @@ typedef struct  s_rooms
 	char	*name;
 	int 	x_coord;
 	int 	y_coord;
+	int 	room_id;
+	int		link_with_id;
 	bool	link;
+	int		mode; // 0 - similar room | 1 - start | 2 - end
 }     t_rooms;
 
 bool	set_cvars(void);
@@ -37,6 +41,7 @@ t_rooms  *create_elem(char *data, int x, int y);
 void add_data(t_rooms **start, char *data, int x, int y);
 void print_data(t_rooms *begin);
 void free_list(t_rooms *begin);
+void    change_mode(t_rooms *qwe,int mode);
 
 
 
