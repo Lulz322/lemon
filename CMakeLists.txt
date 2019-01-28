@@ -53,4 +53,4 @@ add_executable(lemon
         printf/print_x.c
         printf/string.c
         srcs/get_next_line.c
-        srcs/main.c srcs/cvars.c)
+        srcs/main.c srcs/cvars.c srcs/list_func.c)
