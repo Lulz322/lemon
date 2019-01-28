@@ -36,13 +36,13 @@ void	push_similar_room(char *line, t_rooms **qwe)
 	free(blyat);
 }
 
-void	find_and_place(char *str, char *str_two, t_rooms **qwe)
+void	find_and_place(char *str, char *str_two, t_rooms **qwe, t_links **whee)
 {
 	t_rooms *tmp;
 	t_rooms *tmp_two;
+
 	tmp = *qwe;
 	tmp_two = *qwe;
-
 	while (tmp->prev)
 		tmp = tmp->prev;
 	while (tmp_two->prev)
@@ -51,19 +51,17 @@ void	find_and_place(char *str, char *str_two, t_rooms **qwe)
 		tmp = tmp->next;
 	while (ft_strcmp(tmp_two->name, str_two) && tmp_two->next)
 		tmp_two = tmp_two->next;
-	tmp->link_with_id = tmp_two->room_id;
-	tmp_two->link_with_id = tmp->room_id;
+	add_data_link(whee, tmp->room_id, tmp_two->room_id);
 	tmp->link = true;
 	tmp_two->link = true;
 }
 
 
-void	push_links(char *line, t_rooms **qwe)
+void	push_links(char *line, t_rooms **qwe, t_links **za_sho)
 {
 	int i;
 	char *str;
 	char *str_two;
-	t_rooms *start;
 	int z;
 
 	z = 0;
@@ -79,12 +77,12 @@ void	push_links(char *line, t_rooms **qwe)
 	i++;
 	while (line[i])
 		str_two[z++] = line[i++];
-	find_and_place(str, str_two, qwe);
+	find_and_place(str, str_two, qwe, za_sho);
 }
 
 
 
-bool	check_line(char *line, t_rooms **qwe, int mode)
+bool	check_line(char *line, t_rooms **qwe, int mode, t_links **za_sho)
 {
 	int i;
 	int counter;
@@ -104,18 +102,19 @@ bool	check_line(char *line, t_rooms **qwe, int mode)
 	if (mode != 0)
 		change_mode(*qwe, mode);
 	if (counter == 0)
-		push_links(line, qwe);
+		push_links(line, qwe, za_sho);
 	return (true);
 }
 
 bool	set_cvars(void)
 {
 	char *line;
-	char *all;
 	int i;
 	t_rooms *qwe;
+	t_links *za_sho;
 
 	qwe = NULL;
+	za_sho = NULL;
 	get_next_line(0, &line);
 	g_global.atns = ft_atoi(line);
 	free(line);
@@ -128,10 +127,11 @@ bool	set_cvars(void)
 			i = change_mode_line(line);
 			get_next_line(0, &line);
 		}
-		if (check_line(line, &qwe, i) == false)
+		if (check_line(line, &qwe, i, &za_sho) == false)
 			break;
 		free(line);
 	}
 	free(line);
 	print_data(qwe);
+	print_links(za_sho);
 }
