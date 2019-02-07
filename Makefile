@@ -1,10 +1,9 @@
 NAME = lem_in
 
-
 CC = gcc
 @CFLAGS = -Wall -Wextra -Werror -g3 -O0
 
-SRC = srcs/main.c srcs/get_next_line.c srcs/cvars.c
+SRC = srcs/main.c srcs/get_next_line.c srcs/cvars.c srcs/list_func.c
 
 OBJ = $(SRC:.c=.o)
 

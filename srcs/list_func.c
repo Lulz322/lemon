@@ -1,8 +1,3 @@
-//
-// Created by Ihor RUBAN on 2019-01-28.
-//
-
-#include <zconf.h>
 #include "../includes/lem_in.h"
 #include "../includes/ft_printf.h"
 
@@ -23,6 +18,8 @@ t_rooms  *create_elem(char *data, int x, int y)
 	new->name = ft_strdup(data);
 	new->link = false;
 	new->mode = 0;
+	new->index = -1;
+	new->index_check = false;
 	new->room_id = g_room_id++;
 	new->x_coord = x;
 	new->y_coord = y;
@@ -95,7 +92,7 @@ void print_data(t_rooms *begin)
         begin = begin->prev;
     while (begin)
     {
-        ft_printf("MRED(%s (%d)) MGRN(%d %d   MODE : %d)\n", begin->name,begin->room_id, begin->x_coord, begin->y_coord, begin->mode);
+        ft_printf("MRED(%s (%d)) MGRN(%d %d   MODE : %d) MRED( INDEX : %d)\n", begin->name,begin->room_id, begin->x_coord, begin->y_coord, begin->mode, begin->index);
         begin = begin->next;
     }
     ft_printf("\n");
