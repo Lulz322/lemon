@@ -71,7 +71,8 @@ void    change_mode(t_rooms *qwe,int mode);
 void add_data_link(t_links **start, int x, int y);
 void print_links(t_links *begin);
 void	find_way(t_rooms *rooms, t_links *links);
-
+void	set_indexes(t_rooms *rooms, t_links *links, int save_id, int set_index);
+void	add_index(t_rooms *rooms, t_links *links);
 
 
 #endif //LEM_IN_LEM_IN_H
