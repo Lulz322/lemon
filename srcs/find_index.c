@@ -32,9 +32,9 @@ void	set_indexes(t_rooms *rooms, t_links *links, int save_id, int set_index)
 		links = links->prev;
 	while (links)
 	{
-		if (links->first_room_id == save_id)
+		if (links->first_room_id == save_id && links->second_room_id != -1)
 			find_room(rooms,links, links->second_room_id, set_index);
-		else if (links->second_room_id == save_id)
+		else if (links->second_room_id == save_id && links->first_room_id != -1)
 			find_room(rooms, links, links->first_room_id, set_index);
 		links = links->next;
 	}
@@ -55,6 +55,7 @@ void	add_index(t_rooms *rooms, t_links *links)
 	save_id = rooms->room_id;
 	rooms->index = set_index++;
 	set_indexes(rooms, links, save_id, set_index);
+	g_links = links;
 	print_data(rooms);
 }
 

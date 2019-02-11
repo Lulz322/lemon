@@ -53,4 +53,4 @@ add_executable(lemon
         printf/print_x.c
         printf/string.c
         srcs/get_next_line.c
-        srcs/main.c srcs/cvars.c srcs/list_func.c srcs/find_way.c srcs/list_func_two.c srcs/find_index.c)
+        srcs/main.c srcs/cvars.c srcs/list_func.c srcs/find_way.c srcs/list_func_two.c srcs/find_index.c includes/ft_printf.h)
