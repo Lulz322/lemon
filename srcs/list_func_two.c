@@ -106,3 +106,24 @@ void free_list_truba(t_truba *begin)
 		begin = tmp;
 	}
 }
+
+void	clean_list(t_way *begin, int id)
+{
+	t_truba *start;
+	while (begin->prev)
+		begin = begin->prev;
+	while (begin)
+	{
+		start = begin->list;
+		while (start->next)
+			start = start->next;
+		if (start->room_id == id)
+			;
+		else {
+			//free_list_truba(begin->list);
+			begin->prev->next = begin->next;
+			//free(begin);
+		}
+		begin = begin->next;
+	}
+}

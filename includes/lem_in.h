@@ -81,4 +81,5 @@ void add_data_truba(t_truba **start, int x);
 t_way  *create_elem_t_way(int len, bool	is_end);
 void free_list_truba(t_truba *begin);
 void print_links_qwe(t_truba *begin);
+void	clean_list(t_way *begin, int id);
 #endif //LEM_IN_LEM_IN_H
