@@ -61,8 +61,11 @@ typedef struct s_links
 	int				first_room_id;
 	int 			second_room_id;
 }				t_links;
+t_links *g_links;
 
 bool	set_cvars(void);
+t_truba  *create_elem_t_truba(int room_id);
+void add_data_truba_begin(t_truba **start, int x);
 t_rooms  *create_elem(char *data, int x, int y);
 void add_data(t_rooms **start, char *data, int x, int y);
 void print_data(t_rooms *begin);
@@ -75,6 +78,7 @@ void	set_indexes(t_rooms *rooms, t_links *links, int save_id, int set_index);
 void	add_index(t_rooms *rooms, t_links *links);
 void add_data_way(t_way **start, int x, bool y);
 void add_data_truba(t_truba **start, int x);
-
-
+t_way  *create_elem_t_way(int len, bool	is_end);
+void free_list_truba(t_truba *begin);
+void print_links_qwe(t_truba *begin);
 #endif //LEM_IN_LEM_IN_H

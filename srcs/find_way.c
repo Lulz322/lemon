@@ -5,44 +5,109 @@
 #include "../includes/lem_in.h"
 #include "../includes/ft_printf.h"
 
-void	set_way(t_rooms *rooms,int save_id, t_way *way, t_truba *truba);
-
-void	find_rooms(t_rooms *rooms, int id, t_way *way, t_truba *truba)
+bool    check_rooms(int index, int id)
 {
-	while (rooms->prev)
-		rooms = rooms->prev;
-	while(rooms)
+	t_links *qwe;
+	qwe = g_links;
+	while (qwe->prev)
+		qwe = qwe->prev;
+	while (qwe)
 	{
-		if (rooms->room_id == id && way->is_end == false)
-		{
-			add_data_way(&way, rooms->room_id, false);
-			add_data_truba(&truba, rooms->room_id);
-			if (rooms->mode != 1)
-				set_way(rooms, --id, way, truba);
-			if (rooms->mode == 1)
-				way->is_end = true;
-		}
-		rooms = rooms->next;
+		if ((qwe->first_room_id == id && qwe->second_room_id == index) ||
+				(qwe->second_room_id == id && qwe->first_room_id == index))
+			return true;
+		qwe = qwe->next;
 	}
+	return false;
 
 }
 
-void	set_way(t_rooms *rooms,int save_id, t_way *way, t_truba *truba)
+void    check_first_room(t_way *way, t_rooms *rooms)
 {
+	int id;
+	while (rooms->prev)
+		rooms = rooms->prev;
+	while (rooms)
+	{
+		if (rooms->mode == 2)
+			id = rooms->room_id;
+		rooms = rooms->next;
+	}
+	while (way->prev)
+		way = way->prev;
+	while (way)
+	{
+		if (way->list->room_id != id)
+			add_data_truba_begin(&way->list, id);
+		way =  way->next;
+	}
+}
+
+void	set_way(t_rooms *rooms,int save_id, t_way *way,int save);
+
+void    clone(int room_id, t_way *way)
+{
+	add_data_way(&way, 0, false);
+
+	t_truba *qwe;
+	qwe = way->prev->list;
+	while (qwe)
+	{
+		add_data_truba(&way->list, qwe->room_id);
+		qwe = qwe->next;
+	}
+}
+
+
+void	find_rooms(t_rooms *rooms, int id, t_way *way, int save)
+{
+	int counter;
+	id--;
+	counter = 0;
+	while (rooms->prev)
+		rooms = rooms->prev;
+	while (rooms && way->is_end == false)
+	{
+		if ((rooms->index == id ) && check_rooms(rooms->room_id, save))
+		{
+			add_data_truba(&way->list, rooms->room_id);
+			if (rooms->mode == 1)
+			{
+				way->is_end = true;
+				return;
+			}
+			find_rooms(rooms, id, way, rooms->room_id);
+		}
+		rooms = rooms->next;
+	}
+}
+
+void	set_way(t_rooms *rooms, int save_id, t_way *way, int save)
+{
+	t_rooms *qwe;
+	qwe = rooms;
 	while (rooms->prev)
 		rooms = rooms->prev;
 	while (rooms)
 	{
 		if (rooms->index == save_id)
-			find_rooms(rooms, rooms->index, way, truba);
+		{
+			if (!way || way->is_end == true)
+				add_data_way(&way, save_id, false);
+			while (way->next)
+				way = way->next;
+			add_data_truba(&way->list, rooms->room_id);
+			find_rooms(rooms, save_id, way, rooms->room_id);
+		}
 		rooms = rooms->next;
 	}
-
+	check_first_room(way, qwe);
 	while (way->prev)
 		way = way->prev;
 	while (way)
 	{
-		ft_printf("LEN : %d\n", way->len);
+		if (way->is_end == true)
+			print_links_qwe(way->list);
 		way = way->next;
 	}
 }
@@ -68,6 +133,6 @@ void	find_way(t_rooms *rooms, t_links *links)
 	save = rooms->index;
 	while (rooms->prev)
 		rooms = rooms->prev;
-	set_way(rooms, save, way, truba);
+	set_way(rooms, save, way, 0);
 
 }
