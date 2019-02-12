@@ -106,10 +106,13 @@ void	find_one_line(t_rooms *rooms, int save, t_way *way, int id)
 
 void	find_rooms(t_rooms *rooms, int id, t_way *way, int save)
 {
-	if ((check_connections(rooms->room_id, rooms) == 2 || check_connections(rooms->room_id, rooms) == 1))
+	int a;
+
+	a = check_connections(rooms->room_id, rooms);
+	if (a == 2 || a == 1)
 		find_one_line(rooms, id, way, --save);
 	else
-		{
+	{
 		clone(rooms->room_id, way);
 		find_one_line(rooms, id, way, --save);
 		way = way->next;
