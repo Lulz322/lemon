@@ -41,6 +41,7 @@ typedef struct  s_rooms
 typedef struct	s_truba
 {
 	struct	s_truba *next;
+	struct  s_truba *prev;
 	int			room_id;
 }				t_truba;
 

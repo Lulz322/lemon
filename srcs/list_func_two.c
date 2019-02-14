@@ -13,6 +13,7 @@ t_truba  *create_elem_t_truba(int room_id)
 
 	new = (t_truba *)malloc(sizeof(t_truba));
 	new->room_id = room_id;
+	new->prev = NULL;
 	new->next = NULL;
 	return new;
 }
@@ -48,6 +49,7 @@ void add_data_truba(t_truba **start, int x)
 		while (new->next)
 			new = new->next;
 		new->next = create_elem_t_truba(x);
+		new->next->prev = new;
 
 	}
 	else

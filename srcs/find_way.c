@@ -22,25 +22,43 @@ bool    check_rooms(int index, int id)
 
 }
 
-void    check_first_room(t_way *way, t_rooms *rooms)
+int    check_first_room(t_way *way, int id)
 {
-	int id;
-	while (rooms->prev)
-		rooms = rooms->prev;
-	while (rooms)
+	t_truba *qwe;
+	int save;
+
+	save = 0;
+	qwe = way->list;
+	while (qwe && qwe->room_id != id)
 	{
-		if (rooms->mode == 2)
-			id = rooms->room_id;
-		rooms = rooms->next;
+		save = qwe->room_id;
+		qwe = qwe->next;
 	}
+	return save;
+
+}
+
+bool    check_way(t_way *way, int id, int id_prev)
+{
+	t_truba *test;
+	int save;
+
+
+	if (!way->prev)
+		return true;
 	while (way->prev)
-		way = way->prev;
-	while (way)
 	{
-		if (way->list->room_id != id)
-			add_data_truba_begin(&way->list, id);
-		way =  way->next;
+		save = check_first_room(way, id_prev);
+		way = way->prev;
+		test = way->list;
+		while (test->next && test->room_id != id_prev)
+			test = test->next;
+		if (test->next == NULL || test->prev->room_id != save)
+			return true;
+		if (test->next->room_id == id && test->room_id != save)
+			return false;
 	}
+	return (true);
 }
 
 void	set_way(t_rooms *rooms,int save_id, t_way *way,int save);
@@ -76,9 +94,9 @@ int 	check_connections(int id, t_rooms *rooms)
 	}
 	return (i);
 }
-void	find_rooms(t_rooms *rooms, int id, t_way *way, int save);
+void	find_rooms(t_rooms *rooms, int id, t_way *way);
 
-void	find_one_line(t_rooms *rooms, int save, t_way *way, int id)
+void	find_one_line(t_rooms *rooms, int save, t_way *way)
 {
 	t_truba *qwe;
 
@@ -89,7 +107,7 @@ void	find_one_line(t_rooms *rooms, int save, t_way *way, int id)
 		qwe = qwe->next;
 	while (rooms && way->is_end == false)
 	{
-		if ((rooms->index <= id) && check_rooms(rooms->room_id, save) && qwe->room_id != rooms->room_id)
+		if (check_rooms(rooms->room_id, save) && qwe->room_id != rooms->room_id && check_way(way, rooms->room_id, save) == true && rooms->mode != 2)
 		{
 			add_data_truba(&way->list, save);
 			if (rooms->mode == 1)
@@ -98,25 +116,31 @@ void	find_one_line(t_rooms *rooms, int save, t_way *way, int id)
 				add_data_truba(&way->list, rooms->room_id);
 				return;
 			}
-			find_rooms(rooms, rooms->room_id, way, id);
+			find_rooms(rooms, rooms->room_id, way);
 		}
 		rooms = rooms->next;
 	}
 }
 
-void	find_rooms(t_rooms *rooms, int id, t_way *way, int save)
+void	find_rooms(t_rooms *rooms, int id, t_way *way)
 {
 	int a;
+	int i;
 
+	i = 0;
 	a = check_connections(rooms->room_id, rooms);
 	if (a == 2 || a == 1)
-		find_one_line(rooms, id, way, --save);
+		find_one_line(rooms, id, way);
 	else
 	{
-		clone(rooms->room_id, way);
-		find_one_line(rooms, id, way, --save);
-		way = way->next;
-		find_one_line(rooms, id, way, --save);
+		a -= 2;
+		while (i++ < a)
+			clone(rooms->room_id, way);
+		while (i--)
+		{
+			find_one_line(rooms, id, way);
+			way = way->next;
+		}
 	}
 }
 
@@ -132,11 +156,11 @@ void	set_way(t_rooms *rooms, int save_id, t_way *way, int save)
 			while (way->next)
 				way = way->next;
 			add_data_truba(&way->list, save_id);
-			find_rooms(rooms, rooms->room_id,way, save);
+			find_rooms(rooms, rooms->room_id,way);
 		}
 		rooms = rooms->next;
 	}
-	clean_list(way, 2);
+//	clean_list(way, 2);
 	while (way->prev)
 		way = way->prev;
 	while (way)

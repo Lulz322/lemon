@@ -9,7 +9,6 @@ end 4 6
 2 4 4
 5 8 2
 6 8 4
-7 2 4
 start-1
 3-4
 2-4
@@ -19,9 +18,6 @@ end-6
 1-2
 2-end
 3-start
-7-end
-7-2
-7-4
 
 
 2
@@ -73,4 +69,22 @@ start 1 3
 ##end
 end 3 5
 start-end
+
+
+5
+##start
+start 1 1
+1 1 1
+2 2 2
+3 3 3
+4 4 4
+##end
+end 5 5
+start-1
+1-4
+4-end
+start-2
+2-4
+start-3
+3-4
 
