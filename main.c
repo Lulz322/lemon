@@ -48,19 +48,15 @@ room7 0 8
 room8 4 3
 ##end
 end 3 5
-room9 8 2
 start-room1
 room1-room2
-room1-room8
-room1-room9
 room2-room3
 room3-room4
 room4-room5
 room5-room6
 room6-room7
 room7-room8
-room8-room9
-room9-end
+room8-end
 
 
 1
@@ -87,4 +83,55 @@ start-2
 2-4
 start-3
 3-4
+
+
+
+1337
+##start
+start 0 0
+1 1 1
+2 2 2
+3 3 3
+4 4 4
+##end
+end 6 6
+start-1
+1-2
+1-3
+1-4
+4-end
+2-4
+3-4
+
+
+
+
+
+
+
+
+2147483648
+##start
+start 1 3
+room1 5 6
+room2 8 9
+room3 7 8
+room4 7 6
+room5 2 2
+room6 8 3
+room7 0 8
+room8 4 3
+##end
+end 3 5
+room9 8 2
+start-room1
+room1-room2
+room2-room3
+room3-room4
+room4-room5
+room5-room6
+room6-room7
+room7-room8
+room8-room9
+room9-end
 

@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include "../libft/includes/libft.h"
+#include "ft_printf.h"
 
 enum	e_bool { false, true };
 

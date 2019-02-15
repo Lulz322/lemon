@@ -1,5 +1,5 @@
 #include "../includes/lem_in.h"
-#include "ft_printf.h"
+//#include "../includes/ft_printf.h"
 
 int		change_mode_line(char *line)
 {

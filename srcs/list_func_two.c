@@ -3,7 +3,7 @@
 //
 
 #include "../includes/lem_in.h"
-#include "../includes/ft_printf.h"
+//#include "../includes/ft_printf.h"
 
 
 
@@ -91,16 +91,19 @@ void print_links_qwe(t_truba *begin)
 {
 	while (begin)
 	{
-		printf("%d - ", begin->room_id);
+		ft_printf("%d - ", begin->room_id);
 		begin = begin->next;
 	}
-	printf("\n");
+	ft_printf("\n");
 }
 
 void free_list_truba(t_truba *begin)
 {
 	t_truba *tmp;
 
+	tmp = begin;
+	while (tmp->prev)
+		tmp = tmp->prev;
 	while (begin)
 	{
 		tmp = begin->next;
@@ -112,20 +115,24 @@ void free_list_truba(t_truba *begin)
 void	clean_list(t_way *begin, int id)
 {
 	t_truba *start;
+	t_way   *save;
 	while (begin->prev)
 		begin = begin->prev;
+	save = begin;
 	while (begin)
 	{
 		start = begin->list;
 		while (start->next)
 			start = start->next;
-		if (start->room_id == id)
-			;
-		else {
-			//free_list_truba(begin->list);
-			begin->prev->next = begin->next;
-			//free(begin);
+		if (start->room_id != id)
+		{
+			free_list_truba(begin->list);
+			if (begin->prev)
+				begin->prev->next = begin->next;
+			free(begin);
+			begin = save;
 		}
-		begin = begin->next;
+		else
+			begin = begin->next;
 	}
 }

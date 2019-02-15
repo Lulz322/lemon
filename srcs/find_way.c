@@ -3,7 +3,7 @@
 //
 
 #include "../includes/lem_in.h"
-#include "../includes/ft_printf.h"
+//#include "../includes/ft_printf.h"
 
 bool    check_rooms(int index, int id)
 {
@@ -43,9 +43,15 @@ bool    check_way(t_way *way, int id, int id_prev)
 	t_truba *test;
 	int save;
 
-
 	if (!way->prev)
 		return true;
+	test = way->list;
+	while (test)
+	{
+		if (test->room_id == id)
+			return (false);
+		test = test->next;
+	}
 	while (way->prev)
 	{
 		save = check_first_room(way, id_prev);
@@ -144,10 +150,21 @@ void	find_rooms(t_rooms *rooms, int id, t_way *way)
 	}
 }
 
-void	set_way(t_rooms *rooms, int save_id, t_way *way, int save)
+int     find_mode(t_rooms *rooms)
 {
 	while (rooms->prev)
 		rooms = rooms->prev;
+	while (rooms->next && rooms->mode != 1)
+		rooms = rooms->next;
+	return (rooms->room_id);
+}
+
+void	set_way(t_rooms *rooms, int save_id, t_way *way, int save)
+{
+	t_rooms *save_rooms;
+	while (rooms->prev)
+		rooms = rooms->prev;
+	save_rooms = rooms;
 	while (rooms)
 	{
 		if (check_rooms(save_id, rooms->room_id) && save_id != rooms->room_id)
@@ -160,7 +177,8 @@ void	set_way(t_rooms *rooms, int save_id, t_way *way, int save)
 		}
 		rooms = rooms->next;
 	}
-//	clean_list(way, 2);
+//
+	//clean_list(way, find_mode(save_rooms));
 	while (way->prev)
 		way = way->prev;
 	while (way)
@@ -192,5 +210,6 @@ void	find_way(t_rooms *rooms, t_links *links)
 	while (rooms->prev)
 		rooms = rooms->prev;
 	set_way(rooms, save, way, save2);
+
 
 }

@@ -1,5 +1,5 @@
 #include "../includes/lem_in.h"
-#include "../includes/ft_printf.h"
+//#include "../includes/ft_printf.h"
 
 
 void    change_mode(t_rooms *qwe,int mode)
