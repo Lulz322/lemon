@@ -18,6 +18,7 @@ typedef struct  s_global
 	int	atns;
 	int room_counter;
 	int link_counter;
+	int counter;
 }	t_global;
 
 t_global g_global;

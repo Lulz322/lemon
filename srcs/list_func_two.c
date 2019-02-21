@@ -89,17 +89,21 @@ void add_data_way(t_way **start, int x, bool y)
 void    add_data_way_next(t_way **start, int x, bool y)
 {
 	t_way *new;
-	t_way *tmp;
+	t_way *tmp_next;
 	t_way *tmp_prev;
 
 	new = *start;
-	tmp = NULL;
+	tmp_next = NULL;
+
 	if (new->next)
-		tmp = new->next;
+		tmp_next = new->next;
 	new->next = create_elem_t_way(x, y);
 	new->next->prev = new;
-	if (tmp)
-		new->next->next = tmp;
+	if (tmp_next)
+	{
+		new->next->next = tmp_next;
+		tmp_next->prev = new->next;
+	}
 
 }
 
