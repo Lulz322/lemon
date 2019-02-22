@@ -132,8 +132,8 @@ bool	set_cvars(void)
 		free(line);
 	}
 	free(line);
-	print_data(qwe);
-	print_links(za_sho);
+	//print_data(qwe);
+	//print_links(za_sho);
 	find_way(qwe, za_sho);
 	return (true);
 }

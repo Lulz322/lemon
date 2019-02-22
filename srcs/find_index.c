@@ -56,6 +56,6 @@ void	add_index(t_rooms *rooms, t_links *links)
 	rooms->index = set_index++;
 	set_indexes(rooms, links, save_id, set_index);
 	g_links = links;
-	print_data(rooms);
+	//print_data(rooms);
 }
 

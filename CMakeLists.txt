@@ -36,6 +36,7 @@ add_executable(lemon
         libft/ft_strsub.c
         libft/ft_swap.c
         libft/lst_gnl.c
+        libft/ft_strdel.c
         printf/adress.c
         printf/check.c
         printf/check_two.c

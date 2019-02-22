@@ -1,7 +1,7 @@
 NAME = lem_in
 
 CC = gcc
-@CFLAGS = -Wall -Wextra -Werror -g3 -O0
+@CFLAGS = -Wall -Wextra -Werror -Ofast
 
 SRC = srcs/main.c srcs/get_next_line.c srcs/cvars.c srcs/list_func.c srcs/list_func_two.c srcs/find_way.c srcs/find_index.c
 OBJ = $(SRC:.c=.o)

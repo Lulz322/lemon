@@ -59,26 +59,16 @@ bool    check_way(t_way *way, int id, int next_room)
 {
 	t_truba *qwe;
 	t_way *save;
-	t_truba *save1;
+	int check;
 
 
 	save = way;
 	qwe = way->list;
-	save1 = qwe;
 	while (qwe)
 	{
 		if (next_room == qwe->room_id)
 			return false;
 		qwe = qwe->next;
-	}
-	if (!way->prev)
-		return true;
-	while (way->prev)
-	{
-		way = way->prev;
-		qwe = save1;
-		if (check_prev_ways(way->list, qwe, id, next_room) == false)
-			return false;
 	}
 	way = save;
 	return true;
@@ -102,11 +92,20 @@ void    clone(t_way *way)
 	way = way->prev;
 }
 
-int     find_mode(t_rooms *rooms)
+int     find_mode_start(t_rooms *rooms)
 {
 	while (rooms->prev)
 		rooms = rooms->prev;
 	while (rooms->next && rooms->mode != 1)
+		rooms = rooms->next;
+	return (rooms->room_id);
+}
+
+int     find_mode_end(t_rooms *rooms)
+{
+	while (rooms->prev)
+		rooms = rooms->prev;
+	while (rooms->next && rooms->mode != 2)
 		rooms = rooms->next;
 	return (rooms->room_id);
 }
@@ -116,12 +115,15 @@ int 	check_connections(int id, t_rooms *rooms)
 	int i;
 
 	i = 0;
+	int end;
+
+	end = find_mode_end(rooms);
 	t_links *qwe;
 	qwe = g_links;
 
 	while (qwe)
 	{
-		if (qwe->second_room_id == id || qwe->first_room_id == id)
+		if ((qwe->second_room_id == id || qwe->first_room_id == id) && end != id)
 			i++;
 		qwe = qwe->next;
 	}
@@ -140,10 +142,10 @@ void	find_rooms(t_rooms *rooms, int id, t_way *way)
 
 	a = 0;
 	conn = check_connections(id, rooms);
-	if (conn == 2 || conn == 1) {
+	if (conn == 2 || conn == 1 || find_mode_start(rooms) == id) {
 		if (way->is_end != true)
 			add_data_truba(&way->list, id);
-		if (find_mode(rooms) == id)
+		if (find_mode_start(rooms) == id)
 			way->is_end = true;
 	}
 	else
@@ -169,38 +171,52 @@ void    set_next_ways(t_rooms *rooms, t_way *way)
 {
 	int counter;
 	int last_id;
+	int d;
 	t_rooms *save;
 	save = rooms;
 
 	counter = g_global.counter;
 	while (way->next)
 		way = way->next;
-	while (--counter >= 0)
+	while (counter)
 	{
+		d = 0;
 		rooms = save;
 		last_id = check_last_room(way->list);
 		while (rooms)
 		{
 			if (way->is_end == false &&check_rooms(rooms->room_id, last_id) && check_way(way, last_id, rooms->room_id))
 			{
+				d++;
 				find_rooms(rooms, rooms->room_id, way);
-				if (find_mode(rooms) == rooms->room_id)
+				if (find_mode_start(rooms) == rooms->room_id) {
 					way->is_end = true;
+					g_global.counter--;
+				}
 				if (way->prev)
 					way = way->prev;
+				counter--;
 				if (check_last_room(way->list) != last_id)
 					break;
 			}
 			rooms = rooms->next;
 		}
-		if (way->prev)
-			way = way->prev;
+		if (d == 0 && way->is_end == false)
+		{
+			clean_list_one(way);
+			g_global.counter--;
+			counter--;
+		}
+		if (d == 0)
+			if (way->prev)
+				way = way->prev;
 	}
 }
 
 
 void	set_way(t_rooms *rooms, int save_id, t_way *way, int save)
 {
+	t_way *save_q;
 	g_global.counter = 0;
 	t_rooms *save_rooms;
 	while (rooms->prev)
@@ -219,14 +235,30 @@ void	set_way(t_rooms *rooms, int save_id, t_way *way, int save)
 		rooms = rooms->next;
 	}
 	rooms = save_rooms;
-	for (int i = 0; i <= 1 ;i++)
+	int c;
+	c = 0;
+	while (rooms)
+	{
+		if (rooms->mode == 2) {
+			c = rooms->index;
+			break;
+		}
+		rooms = rooms->next;
+	}
+	c += 10;
+	rooms = save_rooms;
+	save_q = way;
+	for (int i = 0; i <= c  ;i++) {
+		way = save_q;
 		set_next_ways(rooms, way);
-	//clean_list(way, find_mode(save_rooms));
+
+	}
+	clean_list(way, find_mode_start(save_rooms));
 	while (way->prev)
 		way = way->prev;
 	while (way)
 	{
-	//	if (way->is_end == true)
+		//if (way->is_end == true)
 			print_links_qwe(way->list);
 		way = way->next;
 	}
@@ -239,7 +271,9 @@ void	find_way(t_rooms *rooms, t_links *links)
 	int save2;
 
 	way = NULL;
+	//ft_printf("Hello");
 	add_index(rooms, links);
+	//ft_printf("World!\n");
 	int save;
 	while (rooms->prev)
 		rooms = rooms->prev;

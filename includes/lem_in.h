@@ -86,4 +86,5 @@ void free_list_truba(t_truba *begin);
 void print_links_qwe(t_truba *begin);
 void	clean_list(t_way *begin, int id);
 void    add_data_way_next(t_way **start, int x, bool y);
+void	clean_list_one(t_way *begin);
 #endif //LEM_IN_LEM_IN_H
