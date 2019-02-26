@@ -82,9 +82,9 @@ void	add_index(t_rooms *rooms, t_links *links);
 void add_data_way(t_way **start, int x, bool y);
 void add_data_truba(t_truba **start, int x);
 t_way  *create_elem_t_way(int len, bool	is_end);
-void free_list_truba(t_truba *begin);
+void free_list_truba(t_truba **qwe);
 void print_links_qwe(t_truba *begin);
 void	clean_list(t_way *begin, int id);
 void    add_data_way_next(t_way **start, int x, bool y);
-void	clean_list_one(t_way *begin);
+void	clean_list_one(t_way **qwe);
 #endif //LEM_IN_LEM_IN_H

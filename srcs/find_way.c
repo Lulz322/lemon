@@ -131,9 +131,6 @@ int 	check_connections(int id, t_rooms *rooms)
 }
 void	find_rooms(t_rooms *rooms, int id, t_way *way);
 
-void	find_one_line(t_rooms *rooms, int save, t_way *way)
-{
-}
 
 void	find_rooms(t_rooms *rooms, int id, t_way *way)
 {
@@ -167,14 +164,15 @@ void	find_rooms(t_rooms *rooms, int id, t_way *way)
 
 }
 
-void    set_next_ways(t_rooms *rooms, t_way *way)
+void    set_next_ways(t_rooms *rooms, t_way **qwe)
 {
 	int counter;
 	int last_id;
 	int d;
 	t_rooms *save;
+	t_way *way;
 	save = rooms;
-
+	way = *qwe;
 	counter = g_global.counter;
 	while (way->next)
 		way = way->next;
@@ -201,16 +199,20 @@ void    set_next_ways(t_rooms *rooms, t_way *way)
 			}
 			rooms = rooms->next;
 		}
-		if (d == 0 && way->is_end == false)
-		{
-			clean_list_one(way);
-			g_global.counter--;
-			counter--;
-		}
-		if (d == 0)
-			if (way->prev)
-				way = way->prev;
+		if (d == 0 && way->is_end == false) {
+            clean_list_one(&way);
+            g_global.counter--;
+            int a = g_global.counter;
+            counter--;
+        }
+		else
+		    {
+                if (d == 0)
+                    if (way->prev)
+                        way = way->prev;
+            }
 	}
+    *qwe = way;
 }
 
 
@@ -245,20 +247,17 @@ void	set_way(t_rooms *rooms, int save_id, t_way *way, int save)
 		}
 		rooms = rooms->next;
 	}
-	c += 10;
+	c += 2;
 	rooms = save_rooms;
-	save_q = way;
 	for (int i = 0; i <= c  ;i++) {
-		way = save_q;
-		set_next_ways(rooms, way);
-
+		set_next_ways(rooms, &way);
 	}
-	clean_list(way, find_mode_start(save_rooms));
+	//clean_list(way, find_mode_start(save_rooms));
 	while (way->prev)
 		way = way->prev;
 	while (way)
 	{
-		//if (way->is_end == true)
+		if (way->is_end == true)
 			print_links_qwe(way->list);
 		way = way->next;
 	}
@@ -271,9 +270,9 @@ void	find_way(t_rooms *rooms, t_links *links)
 	int save2;
 
 	way = NULL;
-	//ft_printf("Hello");
+	system("date");
 	add_index(rooms, links);
-	//ft_printf("World!\n");
+	system("date");
 	int save;
 	while (rooms->prev)
 		rooms = rooms->prev;

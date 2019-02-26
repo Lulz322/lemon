@@ -109,18 +109,20 @@ void    add_data_way_next(t_way **start, int x, bool y)
 
 void print_links_qwe(t_truba *begin)
 {
-	while (begin)
+	while (begin && begin->room_id)
 	{
-		ft_printf("%d - ", begin->room_id);
+		printf("%d - ", begin->room_id);
 		begin = begin->next;
 	}
 	ft_printf("\n");
 }
 
-void free_list_truba(t_truba *begin)
+void free_list_truba(t_truba **qwe)
 {
 	t_truba *tmp;
+	t_truba *begin;
 
+	begin = *qwe;
 	tmp = begin;
 	while (tmp->prev)
 		tmp = tmp->prev;
@@ -147,7 +149,7 @@ void	clean_list(t_way *begin, int id)
 			start = start->next;
 		if (start->room_id != id)
 		{
-			free_list_truba(save_truba);
+			free_list_truba(&save_truba);
 			save = begin;
 			if (begin->next)
 				begin->next->prev = save->prev;
@@ -159,20 +161,32 @@ void	clean_list(t_way *begin, int id)
 	}
 }
 
-void	clean_list_one(t_way *begin)
+void	clean_list_one(t_way **qwe)
 {
+    t_way *begin;
 	t_truba *start;
 	t_way *save;
+	t_way *save_adr;
 
+	begin = *qwe;
 	start = begin->list;
-	free_list_truba(begin->list);
+	free_list_truba(&begin->list);
 	//free(&begin->list);
 	if (begin->prev)
 		begin->prev->next = begin->next;
 	if (begin->next)
 		begin->next->prev = begin->prev;
 	save = begin;
-	if (begin->prev)
-		begin = begin->prev;
-	free(save);
+    if (!begin->prev) {
+    	save_adr = save->next->next;
+        free(save);
+        *qwe = begin->next;
+    }
+    if (begin->prev) {
+        *qwe = begin->prev;
+        //begin = begin->prev;
+        free(save);
+        save = NULL;
+    }
+
 }
