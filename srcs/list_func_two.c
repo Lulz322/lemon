@@ -111,10 +111,12 @@ void print_links_qwe(t_truba *begin)
 {
 	while (begin && begin->room_id)
 	{
-		printf("%d - ", begin->room_id);
+	    ft_putnbr(begin->room_id);
+	    ft_putstr(" - ");
+		//printf("%d - ", begin->room_id);
 		begin = begin->next;
 	}
-	ft_printf("\n");
+	ft_putchar('\n');
 }
 
 void free_list_truba(t_truba **qwe)
@@ -189,4 +191,88 @@ void	clean_list_one(t_way **qwe)
         save = NULL;
     }
 
+}
+
+bool    check_other_ways(t_truba *qwe, int id)
+{
+    while (qwe)
+    {
+        if (qwe->room_id == id)
+            return true;
+        qwe = qwe->next;
+    }
+    return false;
+}
+
+void    del_other_ways(t_truba *qwe, t_way **way, t_rooms *rooms)
+{
+    t_way *yo;
+    t_way *save;
+
+    yo = *way;
+    save = yo;
+    while (qwe)
+    {
+        yo = save;
+        *way = yo;
+        while (yo)
+        {
+            if (yo->is_end == false)
+            {
+                if (qwe->room_id != g_global.last_room
+                && qwe->room_id != g_global.first_room
+                && check_other_ways(yo->list, qwe->room_id) == true) {
+                    clean_list_one(way);
+                    g_global.counter--;
+                }
+            }
+            yo = yo->prev;
+            *way = yo;
+        }
+        qwe = qwe->next;
+    }
+    *way = save;
+}
+
+void    del_one_room(t_rooms **rooms)
+{
+    t_rooms *qwe;
+
+    qwe = *rooms;
+    free(qwe->name);
+    qwe->room_id = -1;
+    if (qwe->next)
+        qwe->next->prev = qwe->prev;
+    if (qwe->prev)
+        qwe->prev->next = qwe->next;
+    if (!qwe->prev)
+        *rooms = qwe->next;
+    if (qwe->prev)
+    {
+        *rooms = qwe->prev;
+    }
+}
+
+void    del_rooms(t_truba *qwe, t_rooms **rooms)
+{
+    t_rooms *save;
+    t_rooms *iter;
+
+    save = *rooms;
+    iter = *rooms;
+    while (qwe)
+    {
+        iter = save;
+        *rooms = save;
+        while (iter)
+        {
+            if (iter->room_id == qwe->room_id && iter->mode == 0)
+            {
+                del_one_room(rooms);
+            }
+            iter = iter->next;
+            *rooms = iter;
+        }
+        qwe = qwe->next;
+    }
 }

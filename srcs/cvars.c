@@ -106,34 +106,42 @@ bool	check_line(char *line, t_rooms **qwe, int mode, t_links **za_sho)
 	return (true);
 }
 
-bool	set_cvars(void)
+bool	set_cvars(t_rooms *qwe, t_links *za_sho)
 {
 	char *line;
-	int i;
-	t_rooms *qwe;
-	t_links *za_sho;
+	static int i;
+	bool counter;
 
-	qwe = NULL;
-	za_sho = NULL;
-	get_next_line(0, &line);
-	g_global.atns = ft_atoi(line);
-	free(line);
+	counter = false;
 	while (1)
 	{
-		i = 0;
-		get_next_line(0, &line);
-		if (line[0] == '#')
-		{
-			i = change_mode_line(line);
-			get_next_line(0, &line);
-		}
-		if (check_line(line, &qwe, i, &za_sho) == false)
-			break;
-		free(line);
+	    while (1)
+	    {
+            get_next_line(0, &line);
+            if (line[0] == '#')
+            {
+                if (i == 0)
+                    i = change_mode_line(line);
+                break;
+            }
+            if (g_global.atns == 0) {
+                g_global.atns = (int) ft_atoi(line);
+                free(line);
+                break;
+            }
+            if (check_line(line, &qwe, i, &za_sho) == false)
+            {
+                counter = true;
+                break;
+            }
+            i = 0;
+            free(line);
+        }
+	    if (counter == true)
+            break;
 	}
-	free(line);
 	//print_data(qwe);
 	//print_links(za_sho);
-	find_way(qwe, za_sho);
+    find_way(qwe, za_sho);
 	return (true);
 }

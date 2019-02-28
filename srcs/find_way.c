@@ -36,31 +36,10 @@ int    check_last_room(t_truba *qwe)
 
 }
 
-
-bool    check_prev_ways(t_truba *first, t_truba *save, int id, int next_room)
-{
-	while (first->prev)
-		first = first->prev;
-	while (save->prev)
-		save = save->prev;
-	while (first && save)
-	{
-		if (first->room_id != save->room_id)
-			return true;
-		save = save->next;
-		first = first->next;
-	}
-	if (first && first->next && first->prev && (first->next->room_id == next_room || first->prev->room_id == next_room))
-		return false;
-	return  true;
-}
-
 bool    check_way(t_way *way, int id, int next_room)
 {
 	t_truba *qwe;
 	t_way *save;
-	int check;
-
 
 	save = way;
 	qwe = way->list;
@@ -72,14 +51,14 @@ bool    check_way(t_way *way, int id, int next_room)
 	}
 	way = save;
 	return true;
-
 }
 
 void	set_way(t_rooms *rooms,int save_id, t_way *way,int save);
 
 void    clone(t_way *way)
 {
-
+   // ft_putstr("START CLONNING : \n");
+   // system("date");
 	add_data_way_next(&way, 0, false);
 	t_truba *qwe;
 	qwe = way->list;
@@ -90,6 +69,8 @@ void    clone(t_way *way)
 		qwe = qwe->next;
 	}
 	way = way->prev;
+   // ft_putstr("FINISH CLONNING : \n");
+    //system("date");
 }
 
 int     find_mode_start(t_rooms *rooms)
@@ -98,6 +79,7 @@ int     find_mode_start(t_rooms *rooms)
 		rooms = rooms->prev;
 	while (rooms->next && rooms->mode != 1)
 		rooms = rooms->next;
+	g_global.first_room = rooms->room_id;
 	return (rooms->room_id);
 }
 
@@ -107,6 +89,7 @@ int     find_mode_end(t_rooms *rooms)
 		rooms = rooms->prev;
 	while (rooms->next && rooms->mode != 2)
 		rooms = rooms->next;
+	g_global.last_room = rooms->room_id;
 	return (rooms->room_id);
 }
 
@@ -142,8 +125,11 @@ void	find_rooms(t_rooms *rooms, int id, t_way *way)
 	if (conn == 2 || conn == 1 || find_mode_start(rooms) == id) {
 		if (way->is_end != true)
 			add_data_truba(&way->list, id);
-		if (find_mode_start(rooms) == id)
+		if (find_mode_start(rooms) == id) {
 			way->is_end = true;
+			del_rooms(way->list, &rooms);
+			del_other_ways(way->list, &way, rooms);
+		}
 	}
 	else
 	{
@@ -190,6 +176,7 @@ void    set_next_ways(t_rooms *rooms, t_way **qwe)
 				if (find_mode_start(rooms) == rooms->room_id) {
 					way->is_end = true;
 					g_global.counter--;
+					return;
 				}
 				if (way->prev)
 					way = way->prev;
@@ -202,7 +189,6 @@ void    set_next_ways(t_rooms *rooms, t_way **qwe)
 		if (d == 0 && way->is_end == false) {
             clean_list_one(&way);
             g_global.counter--;
-            int a = g_global.counter;
             counter--;
         }
 		else
@@ -247,9 +233,10 @@ void	set_way(t_rooms *rooms, int save_id, t_way *way, int save)
 		}
 		rooms = rooms->next;
 	}
-	c += 2;
+	c += 10;
 	rooms = save_rooms;
 	for (int i = 0; i <= c  ;i++) {
+	   // system("date");
 		set_next_ways(rooms, &way);
 	}
 	//clean_list(way, find_mode_start(save_rooms));
@@ -257,9 +244,10 @@ void	set_way(t_rooms *rooms, int save_id, t_way *way, int save)
 		way = way->prev;
 	while (way)
 	{
-		if (way->is_end == true)
-			print_links_qwe(way->list);
+		//if (way->is_end == true)
+		    print_links_qwe(way->list);
 		way = way->next;
+		//system("date");
 	}
 }
 
@@ -270,9 +258,11 @@ void	find_way(t_rooms *rooms, t_links *links)
 	int save2;
 
 	way = NULL;
-	system("date");
+	//ft_putstr("START FINDING LINKS\n");
+	//system("date");
 	add_index(rooms, links);
-	system("date");
+   // ft_putstr("FINISH FINDING LINKS\n");
+	//system("date");
 	int save;
 	while (rooms->prev)
 		rooms = rooms->prev;
@@ -287,6 +277,4 @@ void	find_way(t_rooms *rooms, t_links *links)
 	while (rooms->prev)
 		rooms = rooms->prev;
 	set_way(rooms, save, way, save2);
-
-
 }

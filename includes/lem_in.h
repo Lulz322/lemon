@@ -19,6 +19,8 @@ typedef struct  s_global
 	int room_counter;
 	int link_counter;
 	int counter;
+	int first_room;
+	int last_room;
 }	t_global;
 
 t_global g_global;
@@ -66,7 +68,7 @@ typedef struct s_links
 }				t_links;
 t_links *g_links;
 
-bool	set_cvars(void);
+bool	set_cvars(t_rooms *qwe, t_links *za_sho);
 t_truba  *create_elem_t_truba(int room_id);
 void add_data_truba_begin(t_truba **start, int x);
 t_rooms  *create_elem(char *data, int x, int y);
@@ -87,4 +89,8 @@ void print_links_qwe(t_truba *begin);
 void	clean_list(t_way *begin, int id);
 void    add_data_way_next(t_way **start, int x, bool y);
 void	clean_list_one(t_way **qwe);
+void    del_rooms(t_truba *qwe, t_rooms **rooms);
+void    del_other_ways(t_truba *qwe, t_way **way, t_rooms *rooms);
+int     find_mode_start(t_rooms *rooms);
+int     find_mode_end(t_rooms *rooms);
 #endif //LEM_IN_LEM_IN_H
