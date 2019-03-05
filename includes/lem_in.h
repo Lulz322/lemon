@@ -11,7 +11,9 @@ enum	e_bool { false, true };
 
 _BOOL;
 
-#define _ERROR_NOTIS(ex) if(ex == false) {return(ft_printf("MRED(ERROR)\n"));}
+#define _ERROR_NOTIS_SET(ex) if(ex == false) {ft_printf("MRED(ERROR IN ROMMS/LINKS)\n");return(false);}
+#define _ERROR_NOTIS_LINE(ex) if(ex == false) {ft_printf("MRED(ERROR IN LINE)\n");return(false);}
+#define _ERROR_NOTIS_ROOM(ex) if(ex == false) {ft_printf("MRED(ERROR IN ROOM)\n");return(false);}
 
 typedef struct  s_global
 {
@@ -36,8 +38,6 @@ typedef struct  s_rooms
 	int 	y_coord;
 	int 	room_id;
 	int 	index;
-	bool	index_check;
-	bool	link;
 	int		mode; // 0 - similar room | 1 - start | 2 - end
 }     t_rooms;
 
@@ -68,29 +68,5 @@ typedef struct s_links
 }				t_links;
 t_links *g_links;
 
-bool	set_cvars(t_rooms *qwe, t_links *za_sho);
-t_truba  *create_elem_t_truba(int room_id);
-void add_data_truba_begin(t_truba **start, int x);
-t_rooms  *create_elem(char *data, int x, int y);
-void add_data(t_rooms **start, char *data, int x, int y);
-void print_data(t_rooms *begin);
-void free_list(t_rooms *begin);
-void    change_mode(t_rooms *qwe,int mode);
-void add_data_link(t_links **start, int x, int y);
-void print_links(t_links *begin);
-void	find_way(t_rooms *rooms, t_links *links);
-void	set_indexes(t_rooms *rooms, t_links *links, int save_id, int set_index);
-void	add_index(t_rooms *rooms, t_links *links);
-void add_data_way(t_way **start, int x, bool y);
-void add_data_truba(t_truba **start, int x);
-t_way  *create_elem_t_way(int len, bool	is_end);
-void free_list_truba(t_truba **qwe);
-void print_links_qwe(t_truba *begin);
-void	clean_list(t_way *begin, int id);
-void    add_data_way_next(t_way **start, int x, bool y);
-void	clean_list_one(t_way **qwe);
-void    del_rooms(t_truba *qwe, t_rooms **rooms);
-void    del_other_ways(t_truba *qwe, t_way **way, t_rooms *rooms);
-int     find_mode_start(t_rooms *rooms);
-int     find_mode_end(t_rooms *rooms);
+bool set_rooms_and_links(t_rooms **rooms, t_links **links);
 #endif //LEM_IN_LEM_IN_H

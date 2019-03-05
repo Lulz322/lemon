@@ -16,10 +16,8 @@ t_rooms  *create_elem(char *data, int x, int y)
 
 	new = (t_rooms *)malloc(sizeof(t_rooms));
 	new->name = ft_strdup(data);
-	new->link = false;
 	new->mode = 0;
 	new->index = -1;
-	new->index_check = false;
 	new->room_id = g_room_id++;
 	new->x_coord = x;
 	new->y_coord = y;
@@ -32,17 +30,11 @@ void add_data(t_rooms **start, char *data, int x, int y)
 {
 	t_rooms *new;
 
-	new = *start;
-	if (*start)
-	{
-		while (new->next)
-			new = new->next;
-		new->next = create_elem(data, x, y);
+	new = create_elem(data, x , y);
+	new->next = *start;
+	if (new->next)
 		new->next->prev = new;
-
-	}
-	else
-		*start = create_elem(data, x , y);
+	*start = new;
 }
 
 t_links  *create_elem_link(int x, int y)
@@ -61,17 +53,9 @@ void add_data_link(t_links **start, int x, int y)
 {
 	t_links *new;
 
-	new = *start;
-	if (*start)
-	{
-		while (new->next)
-			new = new->next;
-		new->next = create_elem_link(x, y);
-		new->next->prev = new;
-
-	}
-	else
-		*start = create_elem_link(x , y);
+	new = create_elem_link(x , y);
+	new->next = *start;
+	*start = new;
 }
 
 void print_links(t_links *begin)

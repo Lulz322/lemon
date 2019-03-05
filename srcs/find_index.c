@@ -15,7 +15,6 @@ void	find_room(t_rooms *rooms, t_links *links, int id, int counter)
 			if (counter < rooms->index || rooms->index == -1)
 			{
 				rooms->index = counter;
-				rooms->index_check = true;
 				if (rooms->mode != 2)
 					set_indexes(rooms, links, id, ++counter);
 				else

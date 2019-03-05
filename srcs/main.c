@@ -9,6 +9,6 @@ int main(void)
     za_sho = NULL;
 
 	g_room_id = 1;
-	_ERROR_NOTIS(set_cvars(qwe, za_sho));
+	_ERROR_NOTIS_SET(set_rooms_and_links(&qwe, &za_sho));
 	return 0;
 }
