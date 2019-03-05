@@ -3,7 +3,7 @@
 //
 
 #include "../includes/lem_in.h"
-
+/*
 void	find_room(t_rooms *rooms, t_links *links, int id, int counter)
 {
 	while (rooms->prev)
@@ -58,3 +58,4 @@ void	add_index(t_rooms *rooms, t_links *links)
 	//print_data(rooms);
 }
 
+*/

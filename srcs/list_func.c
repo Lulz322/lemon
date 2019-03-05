@@ -14,7 +14,7 @@ t_rooms  *create_elem(char *data, int x, int y)
 {
 	t_rooms *new;
 
-	new = (t_rooms *)malloc(sizeof(t_rooms));
+	_ERROR_MALLOC(new = (t_rooms *)malloc(sizeof(t_rooms)));
 	new->name = ft_strdup(data);
 	new->mode = 0;
 	new->index = -1;

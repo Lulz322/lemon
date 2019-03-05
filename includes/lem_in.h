@@ -14,6 +14,7 @@ _BOOL;
 #define _ERROR_NOTIS_SET(ex) if(ex == false) {ft_printf("MRED(ERROR IN ROMMS/LINKS)\n");return(false);}
 #define _ERROR_NOTIS_LINE(ex) if(ex == false) {ft_printf("MRED(ERROR IN LINE)\n");return(false);}
 #define _ERROR_NOTIS_ROOM(ex) if(ex == false) {ft_printf("MRED(ERROR IN ROOM)\n");return(false);}
+#define _ERROR_MALLOC(ex)	if(ex == NULL) {ft_printf("MRED(ERROR IN ALLOCATION MEMMORY)\n");exit(0);}
 
 typedef struct  s_global
 {
@@ -69,4 +70,5 @@ typedef struct s_links
 t_links *g_links;
 
 bool set_rooms_and_links(t_rooms **rooms, t_links **links);
+void add_data(t_rooms **start, char *data, int x, int y);
 #endif //LEM_IN_LEM_IN_H

@@ -9,12 +9,32 @@ int		check_comment(char *str)
 	return (0);
 }
 
-bool	add_room_in_list(t_rooms **rooms)
+bool	add_room_in_list(t_rooms **rooms, char *str)
 {
+	int x;
+	int y;
+	int i;
 
+	i = 0;
+	while (str[i])
+		i++;
+	while (str[i] != ' ')
+		i--;
+	i++;
+	x = (int)ft_atoi(&str[i]);
+	while (str[i] >= '0' && str[i] <= '9')
+		i--;
+	i--;
+	while (str[i] >= '0' && str[i] <= '9')
+		i--;
+	i++;
+	y = (int)ft_atoi(&str[i]);
+	str[i - 1] = '\0';
+	add_data(rooms, str, x, y);
+	return (x && y ? true : false);
 }
 
-bool	check_line(const char *str, t_rooms **rooms, t_links **links)
+bool	check_line(char *str, t_rooms **rooms, t_links **links)
 {
 	int spaces;
 	int i;
@@ -25,8 +45,8 @@ bool	check_line(const char *str, t_rooms **rooms, t_links **links)
 		if(str[i] == ' ')
 			spaces++;
 	if(spaces >= 2)
-		_ERROR_NOTIS_ROOM(add_room_in_list(rooms));
-
+		_ERROR_NOTIS_ROOM(add_room_in_list(rooms,str));
+	return true;
 }
 
 bool	set_rooms_and_links(t_rooms **rooms, t_links **links)
