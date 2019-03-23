@@ -6,7 +6,7 @@
 /*   By: iruban <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/23 15:31:39 by iruban            #+#    #+#             */
-/*   Updated: 2018/11/22 11:29:57 by ybuhai           ###   ########.fr       */
+/*   Updated: 2018/11/02 16:24:08 by iruban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 # include <string.h>
 # include <stdlib.h>
 # include <unistd.h>
-
-# define _ERR_NOTIS(ex) if (!(ex)) return NULL;
+# include "ft_printf.h"
+# include "get_next_line.h"
 
 typedef struct	s_list
 {
@@ -25,17 +25,27 @@ typedef struct	s_list
 	struct s_list	*next;
 }				t_list;
 
-int				get_next_line(const int fd, char **line);
 int				ft_sqrt(int nb);
 int				ft_pow(int a, int b);
 void			ft_is_negative(int n);
 int				ft_multiply(int a, int b);
 int				ft_sqr(int a);
+char			*ft_strncat(char *restrict s1,
+		const char *restrict s2, size_t n);
+char			*ft_strcat(char *restrict s1, const char *restrict s2);
+char			*ft_strncpy(char *dst, const char *src, size_t len);
 char			*ft_strcpy(char *dst, const char *src);
 char			*ft_strdup(const char *s1);
 int				ft_memcmp(const void *s1, const void *s2, size_t n);
 void			*ft_memmove(void *dst, const void *src, size_t len);
 void			*ft_memchr(const void *s, int c, size_t n);
+void			*ft_memccpy(void *restrict dst,
+					const void *restrict src, int c, size_t n);
+size_t			ft_strlcat(char *restrict dst,
+				const char *restrict src, size_t dstsize);
+void			*ft_memcpy(void *restrict dst, const void *restrict src,
+				size_t n);
+void			ft_bzero(void *s, size_t n);
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_putchar(unsigned char c);
 void			ft_swap(int *a, int *b);
@@ -49,7 +59,7 @@ char			*ft_strstr(const char *haystack,
 char			*ft_strnstr(const char *haystack, const char *needle,
 				size_t len);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
-long long				ft_atoi(const char *str);
+int				ft_atoi(const char *str);
 int				ft_isalpha(int c);
 int				ft_isdigit(int c);
 int				ft_isalnum(int c);
@@ -72,27 +82,23 @@ char			*ft_strsub(char const *s, unsigned int start, size_t len);
 char			*ft_strjoin(char const *s1, char const *s2);
 char			*ft_strtrim(char const *s);
 char			**ft_strsplit(char const *s, char c);
-char			*ft_itoa(long long n);
-char			*ft_uitoa(unsigned long long n);
-void        ft_revputstr(const char *str);
-char	*ft_strcat(char *restrict s1, const char *restrict s2);
-char	*ft_strncat(char *restrict s1, const char *restrict s2, size_t n);
+char			*ft_itoa(int n);
 void			ft_putendl(char const *s);
 void			ft_putchar_fd(char c, int fd);
 void			ft_putnbr_fd(int n, int fd);
-char			*ft_strncpy(char *dst, const char *src, size_t len);
-void			ft_putnbr(long long n);
-char			*ft_strndup(const char *s1, size_t n);
+void			ft_putnbr(int n);
 void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 t_list			*ft_lstnew(void const *content, size_t content_size);
 void			ft_lstdelone(t_list **alst, void (*del)(void*, size_t));
 void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
+void			ft_lstadd(t_list **alst, t_list *new);
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
-int        ft_strchri_lu(char *s, int c, int i);
-int        ft_strchri(char *s, int c, int i);
-size_t        ft_wstrlen(unsigned *s);
-size_t    ft_wcharlen(unsigned wc);
-int		len(long long  nb);
+int				char_count(char c, char *line);
+void			free_array(char **qqq);
+int				line_count(char **line);
+
+
+
 #endif

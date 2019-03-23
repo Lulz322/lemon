@@ -1,45 +1,50 @@
-NAME = lem_in
+NAME    = lem-in
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -Ofast
+INC_DIR = includes
+SRC_DIR = src
+OBJ_DIR = objs
 
-SRC = srcs/main.c srcs/get_next_line.c srcs/cvars.c srcs/list_func.c srcs/list_func_two.c srcs/find_way.c
-OBJ = $(SRC:.c=.o)
+INCLS   = $(INC_DIR)
+SRCS    = $(wildcard $(SRC_DIR)/*.c)
+OBJS    = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-LIBFT = libft/libft.a
-LMAKE = make -C libft
+CC      = gcc
+CFLAGS  = -Wall -Werror -Wextra -Ofast
+
+LFLAGS  = -I
 
 WHITE=\033[0m
+BGREEN=\033[42m
 GREEN=\033[32m
 RED=\033[31m
+INVERT=\033[7m
 
-DEL = rm -rf
+all: obj $(NAME)
+obj:
+		@mkdir -p $(OBJ_DIR)
 
-all: $(NAME)
+start_grn:
+	@echo "$(GREEN)"
 
-$(OBJ): %.o: %.c
-	@echo -n '+'
-	@$(CC) -c $(CFLAGS) $< -o $@
+$(NAME): start_grn $(OBJS)
+		@make -C libft/
+		@echo ""
+		@gcc libft/libft.a $(OBJS) -o $(NAME)
+		@echo "$(GREEN)$(NAME) created!$(WHITE)"
 
-$(LIBFT):
-	@$(LMAKE)
-
-$(NAME): $(LIBFT) $(OBJ)
-	@$(CC) $(OBJ) libftprintf.a $(LIBFT) -o $(NAME)
-	@echo "> $(GREEN)lem_in$(WHITE)"
-
-dfd:
-	@$(DEL) $(OBJ)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+		@echo -n '+'
+		@$(CC) $(CFLAGS) -c $< -o $@ -I includes/
 
 clean:
-	@$(DEL) $(OBJ)
-	@$(LMAKE) clean
+		@rm -rf $(OBJS) $(OBJ_DIR)
+		@echo "$(RED)TMP files removed!$(WHITE)"
 
 fclean: clean
-	@$(LMAKE) fclean
-	@$(DEL) $(NAME)
-	@echo "$(RED)deleted$(WHITE): ./lem_in"
+		@rm -rf $(NAME) $(LIB_DIR)
+		@echo "$(RED)$(NAME) removed$(WHITE)"
 
-re: fclean all
+re:		fclean all
 
-.PHONY: all fclean clean re test
+
+.PHONY: all clean fclean re
