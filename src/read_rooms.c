@@ -16,7 +16,7 @@ void	create_start(char *line)
 {
 	t_room	*room;
 
-	room = create_elem_room(line);
+	CREATE(line);
 	if (!create_room(&g_global.ways, room))
 		ERROR("Similar room name");
 	if (g_global.start != NULL)
@@ -28,7 +28,7 @@ void	create_end(char *line)
 {
 	t_room	*room;
 
-	room = create_elem_room(line);
+	CREATE(line);
 	if (!create_room(&g_global.ways, room))
 		ERROR("Similar room name");
 	if (g_global.end != NULL)
@@ -54,7 +54,7 @@ void	rooms_mode(char *line, int *mode, int i)
 		create_end(line);
 	else
 	{
-		room = create_elem_room(line);
+		CREATE(line);
 		if (!create_room(&g_global.ways, room))
 			ERROR("Similar room name");
 	}

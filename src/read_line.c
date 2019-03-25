@@ -83,7 +83,7 @@ void	set_cvars(int mode, int i)
 	{
 		while (1)
 		{
-			if (!input_data(&line))
+			if (!input_data(&line) && mode)
 				return ;
 			if (ft_strequ(line, ""))
 				return ;

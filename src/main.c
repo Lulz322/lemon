@@ -55,6 +55,7 @@ int				main(int argc, char **argv)
 		ta_nu_ladno();
 	set_cvars(0, 0);
 	check_first_last_room();
+	_KOSTIL(kostil());
 	first_algo();
 	second_algo();
 	if (set_eff(g_global.no_link_way) <= set_eff(g_global.link_way))

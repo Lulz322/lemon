@@ -12,6 +12,20 @@
 
 #include "lem_in.h"
 
+t_rooms					*create_way(t_room *room)
+{
+	t_rooms *path;
+
+	path = NULL;
+	while (room)
+	{
+		add_room_in_queue(&path, room);
+		room->is_used = true;
+		room = room->prev_room;
+	}
+	return (path);
+}
+
 void	delete_way(t_rooms *way)
 {
 	t_rooms *start;

@@ -24,5 +24,4 @@ int	ta_nu_ladno(void)
 	_ERROR_NOTIS_INDEX(set_indexes(za_sho, qwe));
 	print_data(qwe);
 	exit(0);
-	return (0);
 }

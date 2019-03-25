@@ -15,13 +15,16 @@
 # define _ERROR_NOTIS_LINK(ex) if(ex == false) {printf("MRED(ERROR IN ROOM)\n");return(false);}
 # define _ERROR_NOTIS_INDEX(ex) if(ex == false) {printf("MRED(ERROR IN ROOM)\n");return(false);}
 # define _ERROR_NOTIS_WAY(ex) if(ex == false) {printf("MRED(ERROR IN WAY)\n");return(false);};
-# define ERROR(ex) {ft_printf("%s%s%s\n",ER_START,ex,ER_END);exit(0);};
-# define DEL {delete_way(queue);return (create_way(g_global.start));};
-# define CHANGE {links->room->is_in_queue = true;links->room->prev_room = prev;}
-# define PREPARE(ex) {ex = create_list_of_rooms(g_global.end);reset_rooms_in_queue(g_global.ways);}
-# define CLEAR {reset_rooms_in_queue(g_global.ways);reset_used_nodes(g_global.ways);}
-# define FIRST {while ((way = do_second_path())){create_ways(&g_global.link_way, way);}}
-# define SECOND {while ((way = do_first_path())){create_ways(&g_global.no_link_way, way);}}
+# define ERROR(ex) {ft_printf("%s%s%s\n",ER_START,ex,ER_END);exit(0);}
+# define DEL(ex) {delete_way(ex);return (create_way(g_global.start));};
+# define CHANGE {links->room->is_in_queue = true;links->room->prev_room = prev;};
+# define PREPARE(ex) {ex = create_list_of_rooms(g_global.end);reset_rooms_in_queue(g_global.ways);};
+# define CLEAR {reset_rooms_in_queue(g_global.ways);reset_used_nodes(g_global.ways);};
+# define FIRST while ((way = begin_first())){create_ways(&g_global.link_way, way);};
+# define SECOND {while ((way = begin_second())){create_ways(&g_global.no_link_way, way);}};
+# define DEL_AND_SET(ex, ex2) {ex2 = set_room(ex);free_queue(ex);}
+# define CREATE(ex) {room = create_elem_room(ex);}
+# define _KOSTIL(ex) if (!ex){pustit_jukov(g_global.no_link_way);return (1337);};
 enum	e_bool { false, true };
 
 # define _BOOL	typedef enum e_bool bool
@@ -124,7 +127,8 @@ t_room			*create_elem_room(char *line);
 void			add_room_in_queue(t_rooms **list, t_room *node);
 bool			create_room(t_rooms **list, t_room *node);
 t_rooms			*create_list_of_rooms(t_room *first_node);
-t_room			*free_queue(t_rooms **way);
+void			free_queue(t_rooms **way);
+t_room			*set_room(t_rooms **way);
 void 			add_data(t_rooms_algo **start, char *data, int x, int y);
 void 			add_data_link(t_links **start, int x, int y);
 void    		change_mode(t_rooms_algo *qwe,int mode);
@@ -161,4 +165,12 @@ int				check_comment(char *line);
 void			check_errors_in_room(char *line, char **array);
 void			check_room_for_index(t_rooms_algo **rooms, t_links **start,
 							int save_id, int set_index);
+bool			room_in_way(t_rooms *way, t_room *room);
+t_rooms			*begin_first(void);
+t_rooms			*begin_second(void);
+bool			kostil(void);
+t_rooms			*create_way(t_room *room);
+
+
+
 #endif

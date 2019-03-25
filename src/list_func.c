@@ -97,16 +97,26 @@ void				add_room_in_queue(t_rooms **list,
 	}
 }
 
-t_room				*free_queue(t_rooms **way)
+void 				free_queue(t_rooms **way)
 {
-	t_room			*room;
 	t_rooms			*del_me;
+	t_rooms			*pointer;
 
-	room = (*way)->room;
-	del_me = *way;
-	*way = (*way)->next;
+	pointer = *way;
+	del_me = pointer;
+	pointer = pointer->next;
+	*way = pointer;
 	free(del_me);
 	del_me = NULL;
+}
+
+t_room				*set_room(t_rooms **way)
+{
+	t_rooms *poin;
+	t_room *room;
+
+	poin = *way;
+	room = poin->room;
 	return (room);
 }
 

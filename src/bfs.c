@@ -12,62 +12,91 @@
 
 #include "lem_in.h"
 
-t_rooms		*create_way(t_room *room)
-{
-	t_rooms *way;
 
-	way = NULL;
-	while (room)
-	{
-		add_room_in_queue(&way, room);
-		room->is_used = true;
-		room = room->prev_room;
-	}
-	return (way);
-}
-
-void		reset_rooms_in_queue(t_rooms *room)
+void					reset_rooms_in_queue(t_rooms *nodes)
 {
-	while (room)
+	while (nodes)
 	{
-		room->room->is_in_queue = false;
-		room->room->prev_room = NULL;
-		room = room->next;
+		nodes->room->is_in_queue = false;
+		nodes->room->prev_room = NULL;
+		nodes = nodes->next;
 	}
 	g_global.start->is_used = false;
 	g_global.end->is_in_queue = true;
 }
 
-t_rooms		*do_first_path(void)
+void				work_with_links(t_rooms *links,
+										   t_rooms **queue, t_room *prev)
 {
-	t_rooms	*queue;
+	while (links)
+	{
+		if (!links->room->is_in_queue
+			&& !links->room->is_used)
+		{
+			add_room_in_queue(queue, links->room);
+			CHANGE
+		}
+		links = links->next;
+	}
+}
+
+void				work_with_links_2(t_rooms *links,
+											 t_rooms **queue, t_room *prev)
+{
+	bool is_pushed;
+
+	is_pushed = false;
+	while (links)
+	{
+		if (!links->room->is_in_queue
+			&& !links->room->is_used)
+		{
+			if (links->next != NULL || !is_pushed)
+			{
+				add_room_in_queue(queue, links->room);
+				CHANGE
+				if (links->room->links->room != prev)
+					is_pushed = true;
+			}
+		}
+		links = links->next;
+	}
+}
+
+
+
+t_rooms			*begin_first(void)
+{
+	t_rooms *queue;
 	t_room	*room;
 
-	PREPARE(queue);
+	PREPARE(queue)
 	while (queue)
 	{
-		room = free_queue(&queue);
+		DEL_AND_SET(&queue, room)
 		if (room != g_global.start)
-			first_algo_l(room->links, &queue, room);
+			work_with_links(room->links, &queue, room);
 		else
-			DEL;
+			DEL(queue);
 	}
 	return (NULL);
 }
 
-t_rooms		*do_second_path(void)
+t_rooms			*begin_second(void)
 {
-	t_rooms	*queue;
+	t_rooms *queue;
 	t_room	*room;
 
-	PREPARE(queue);
+	PREPARE(queue)
 	while (queue)
 	{
-		room = free_queue(&queue);
+		DEL_AND_SET(&queue, room)
 		if (room != g_global.start)
-			second_algo_l(room->links, &queue, room);
+			work_with_links_2(room->links, &queue, room);
 		else
-			DEL;
+			DEL(queue);
 	}
 	return (NULL);
 }
+
+

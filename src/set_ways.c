@@ -12,8 +12,9 @@
 
 #include "../includes/lem_in.h"
 
-void				reset_used_nodes(t_rooms *list)
+void	reset_used_nodes(t_rooms *list)
 {
+
 	while (list)
 	{
 		list->room->is_used = false;
@@ -21,60 +22,74 @@ void				reset_used_nodes(t_rooms *list)
 	}
 }
 
-void				first_algo_l(t_rooms *links,
-					t_rooms **queue, t_room *prev)
+
+void		del_room(t_rooms **list, t_room *node)
 {
-	while (links)
+	t_rooms *tmp;
+	t_rooms *start;
+	t_rooms *pointer;
+
+	tmp = NULL;
+	pointer = *list;
+	if (pointer->room == node)
 	{
-		if (!links->room->is_in_queue && !links->room->is_used)
-		{
-			add_room_in_queue(queue, links->room);
-			CHANGE;
-		}
-		links = links->next;
+		tmp = pointer;
+		pointer = pointer->next;
 	}
-}
-
-void				second_algo_l(t_rooms *links,
-					t_rooms **queue, t_room *prev)
-{
-	bool is_pushed;
-
-	is_pushed = false;
-	while (links)
+	else
 	{
-		if (!links->room->is_in_queue && !links->room->is_used)
+		start = *list;
+		while (pointer->next)
 		{
-			if (!links->next || !is_pushed)
+			if (pointer->next->room == node)
 			{
-				add_room_in_queue(queue, links->room);
-				CHANGE;
-				if (links->room->links->room != prev)
-					is_pushed = true;
+				tmp = pointer->next;
+				pointer->next = pointer->next->next;
+				break ;
 			}
+			pointer = pointer->next;
 		}
-		links = links->next;
+		*list = start;
 	}
+	free(tmp);
 }
 
-void				first_algo(void)
+bool	kostil(void)
+{
+	t_rooms *path;
+
+	if (room_in_way(g_global.start->links, g_global.end))
+	{
+		path = NULL;
+		add_room_in_queue(&path, g_global.start);
+		add_room_in_queue(&path, g_global.end);
+		create_ways(&g_global.no_link_way, path);
+		del_room(&g_global.start->links, g_global.end);
+		del_room(&g_global.end->links, g_global.start);
+		return (false);
+	}
+	return (true);
+}
+
+void	first_algo()
 {
 	t_rooms *way;
 
-	g_global.no_link_way = NULL;
-	CLEAR;
-	SECOND;
+	way = NULL;
+	while ((way = begin_first()))
+		create_ways(&g_global.no_link_way, way);
 	if (!g_global.no_link_way)
-		ERROR("ERROR");
+		ERROR("ERROR")
 }
 
-void				second_algo(void)
+void	second_algo(void)
 {
 	t_rooms *way;
 
-	g_global.link_way = NULL;
-	CLEAR;
-	FIRST;
+	way = NULL;
+	CLEAR
+	while ((way = begin_second()))
+		create_ways(&g_global.link_way, way);
 	if (!g_global.link_way)
-		ERROR("ERROR");
+		ERROR("ERROR")
 }
