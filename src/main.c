@@ -12,6 +12,38 @@
 
 #include "lem_in.h"
 
+int		char_count(char c, char *line)
+{
+	int i;
+	int counter;
+
+	if (!line || !c)
+		return (1488);
+	counter = 0;
+	i = -1;
+	while (line[++i])
+	{
+		if (line[i] == c)
+			counter++;
+	}
+	return (counter);
+}
+
+
+
+int		line_count(char **array)
+{
+	int i;
+
+	i = -1;
+	if (!array)
+		return (1337);
+	while (array[++i])
+		;
+	return (i);
+}
+
+
 void			errrorrororo(void)
 {
 	ft_printf("MGRN(Usage: ./lem-in [-c][-w][-s][-n][-a] < map)\n");

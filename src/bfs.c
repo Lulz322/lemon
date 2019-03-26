@@ -12,14 +12,16 @@
 
 #include "lem_in.h"
 
-
-void					reset_rooms_in_queue(t_rooms *nodes)
+void					reset_rooms_in_queue()
 {
-	while (nodes)
+	t_rooms *room;
+
+	room = g_global.ways;
+	while (room)
 	{
-		nodes->room->is_in_queue = false;
-		nodes->room->prev_room = NULL;
-		nodes = nodes->next;
+		room->room->prev_room = NULL;
+		room->room->is_in_queue = false;
+		room = room->next;
 	}
 	g_global.start->is_used = false;
 	g_global.end->is_in_queue = true;
@@ -51,7 +53,7 @@ void				work_with_links_2(t_rooms *links,
 		if (!links->room->is_in_queue
 			&& !links->room->is_used)
 		{
-			if (links->next != NULL || !is_pushed)
+			if (!links->next || !is_pushed)
 			{
 				add_room_in_queue(queue, links->room);
 				CHANGE

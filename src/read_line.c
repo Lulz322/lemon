@@ -15,14 +15,19 @@
 int		input_data(char **line)
 {
 	int			gnl;
+	static unsigned  int counter;
 
+	counter++;
 	gnl = get_next_line(0, line);
 	if (!g_global.non_print)
 	{
 		if (g_global.color_mode)
 		{
 			if (*line)
-				ft_printf("MGRN(%s)\n", *line);
+			{
+				color_on(counter);
+				ft_printf("%s\n", *line);
+			}
 		}
 		else
 		{

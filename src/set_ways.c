@@ -12,13 +12,15 @@
 
 #include "../includes/lem_in.h"
 
-void	reset_used_nodes(t_rooms *list)
+void	reset_used_nodes()
 {
+	t_rooms *rooms;
 
-	while (list)
+	rooms = g_global.ways;
+	while (rooms)
 	{
-		list->room->is_used = false;
-		list = list->next;
+		rooms->room->is_used = false;
+		rooms = rooms->next;
 	}
 }
 
@@ -92,4 +94,20 @@ void	second_algo(void)
 		create_ways(&g_global.link_way, way);
 	if (!g_global.link_way)
 		ERROR("ERROR")
+}
+
+void	free_array(char **line)
+{
+	int	i;
+
+	i = 0;
+	if (!line)
+		return ;
+	while (line[i])
+	{
+		ft_strdel(&line[i]);
+		i++;
+	}
+	free(line);
+	line = NULL;
 }

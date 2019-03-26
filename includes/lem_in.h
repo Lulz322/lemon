@@ -19,7 +19,7 @@
 # define DEL(ex) {delete_way(ex);return (create_way(g_global.start));};
 # define CHANGE {links->room->is_in_queue = true;links->room->prev_room = prev;};
 # define PREPARE(ex) {ex = create_list_of_rooms(g_global.end);reset_rooms_in_queue(g_global.ways);};
-# define CLEAR {reset_rooms_in_queue(g_global.ways);reset_used_nodes(g_global.ways);};
+# define CLEAR {reset_rooms_in_queue();reset_used_nodes();};
 # define FIRST while ((way = begin_first())){create_ways(&g_global.link_way, way);};
 # define SECOND {while ((way = begin_second())){create_ways(&g_global.no_link_way, way);}};
 # define DEL_AND_SET(ex, ex2) {ex2 = set_room(ex);free_queue(ex);}
@@ -74,9 +74,14 @@ typedef struct  s_rooms_algo
 	int 	y_coord;
 	int 	room_id;
 	int 	index;
-	int		mode; // 0 - similar room | 1 - start | 2 - end
+	int		mode;
 }     t_rooms_algo;
 
+/*
+ *  0 - similar room
+ *  1 - start
+ *  2 - end
+ */
 
 typedef struct	s_rooms
 {
@@ -127,6 +132,9 @@ t_room			*create_elem_room(char *line);
 void			add_room_in_queue(t_rooms **list, t_room *node);
 bool			create_room(t_rooms **list, t_room *node);
 t_rooms			*create_list_of_rooms(t_room *first_node);
+int		        char_count(char c, char *line);
+int		        line_count(char **array);
+void			free_array(char **qqq);
 void			free_queue(t_rooms **way);
 t_room			*set_room(t_rooms **way);
 void 			add_data(t_rooms_algo **start, char *data, int x, int y);
@@ -146,7 +154,7 @@ void	   		remove_ant(t_ants **ants, t_ants *ant);
 t_rooms			*do_first_path();
 t_rooms			*do_second_path();
 t_ants			*create_list_of_ants(t_rooms *room);
-void			reset_rooms_in_queue(t_rooms *nodes);
+void			reset_rooms_in_queue();
 void			first_algo();
 void			first_algo_l(t_rooms *links,
                                  t_rooms **queue, t_room *prev);
@@ -170,6 +178,7 @@ t_rooms			*begin_first(void);
 t_rooms			*begin_second(void);
 bool			kostil(void);
 t_rooms			*create_way(t_room *room);
+void	        color_on(int id);
 
 
 
