@@ -1,26 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_func_four.c                                   :+:      :+:    :+:   */
+/*   list_funcs.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iruban <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/19 12:59:08 by iruban            #+#    #+#             */
-/*   Updated: 2019/03/19 12:59:10 by iruban           ###   ########.fr       */
+/*   Created: 2019/03/27 14:34:59 by iruban            #+#    #+#             */
+/*   Updated: 2019/03/27 14:35:00 by iruban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../../includes/lem_in.h"
 
-t_ants	*create_list_of_ants(t_rooms *room)
+t_ways	*create_list_of_way(t_rooms *way)
 {
-	t_ants *ants;
+	t_ways *ways;
 
-	_ERROR_MALLOC(ants = malloc(sizeof(t_ants)));
-	ants->ant_id = g_global.ant_counter;
-	ants->position = room;
-	ants->next = NULL;
-	return (ants);
+	_ERROR_MALLOC(ways = malloc(sizeof(t_ways)));
+	ways->way = way;
+	ways->next = NULL;
+	return (ways);
+}
+
+void	create_ways(t_ways **list,
+					t_rooms *way)
+{
+	t_ways *start;
+	t_ways *wheee;
+
+	wheee = *list;
+	if (!wheee)
+		wheee = create_list_of_way(way);
+	else
+	{
+		start = wheee;
+		while (wheee->next != NULL)
+			wheee = wheee->next;
+		_ERROR_MALLOC(wheee->next = malloc(sizeof(t_ways)));
+		wheee->next->way = way;
+		wheee->next->next = NULL;
+		wheee = start;
+	}
+	*list = wheee;
 }
 
 t_ants	*remove_ant_two(t_ants **ants)
@@ -36,17 +57,17 @@ t_ants	*remove_ant_two(t_ants **ants)
 	return (tmp);
 }
 
-void	remove_ant(t_ants **ants, t_ants *ant)
+void	remove_ant(t_ants *ant)
 {
 	t_ants *tmp;
 	t_ants *start;
 
 	tmp = NULL;
-	if (*ants == ant)
-		tmp = remove_ant_two(ants);
+	if (g_global.c_ants == ant)
+		tmp = remove_ant_two(&g_global.c_ants);
 	else
 	{
-		start = *ants;
+		start = g_global.c_ants;
 		while (start->next)
 		{
 			if (start->next == ant)
@@ -61,12 +82,12 @@ void	remove_ant(t_ants **ants, t_ants *ant)
 	free(tmp);
 }
 
-void	create_ant(t_ants **ants, t_rooms *room)
+void	create_ant(t_rooms *room)
 {
 	t_ants *start;
 	t_ants *whee;
 
-	whee = *ants;
+	whee = g_global.c_ants;
 	if (!whee)
 		whee = create_list_of_ants(room);
 	else
@@ -77,9 +98,11 @@ void	create_ant(t_ants **ants, t_rooms *room)
 		_ERROR_MALLOC(start->next = malloc(sizeof(t_ants)));
 		if (start->next)
 			start->next->prev = start;
+		if (start->next)
+			start->next->prev = start;
 		start->next->ant_id = g_global.ant_counter;
 		start->next->position = room;
 		start->next->next = NULL;
 	}
-	*ants = whee;
+	g_global.c_ants = whee;
 }

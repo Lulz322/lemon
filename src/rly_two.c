@@ -65,7 +65,7 @@ bool		add_link_in_list(t_links **links,
 	i = 0;
 	while (str[i] && str[i] != '-')
 		i++;
-	if (str[i] == '\0' && g_global_algo.counter == 0)
+	if (!str[i] && !g_global_algo.counter)
 	{
 		g_global_algo.atns = ft_atoi(str);
 		return (true);

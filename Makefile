@@ -38,10 +38,12 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:
 		@rm -rf $(OBJS) $(OBJ_DIR)
+		@make clean -C libft/
 		@echo "$(RED)TMP files removed!$(WHITE)"
 
 fclean: clean
 		@rm -rf $(NAME) $(LIB_DIR)
+		@make fclean -C libft/
 		@echo "$(RED)$(NAME) removed$(WHITE)"
 
 re:		fclean all

@@ -12,7 +12,7 @@
 
 #include "../includes/lem_in.h"
 
-void	reset_used_nodes()
+void				reset_used_rooms(void)
 {
 	t_rooms *rooms;
 
@@ -24,90 +24,60 @@ void	reset_used_nodes()
 	}
 }
 
-
-void		del_room(t_rooms **list, t_room *node)
+void				first_algo_l(t_rooms *links,
+					t_rooms **queue, t_room *prev)
 {
-	t_rooms *tmp;
-	t_rooms *start;
-	t_rooms *pointer;
-
-	tmp = NULL;
-	pointer = *list;
-	if (pointer->room == node)
+	while (links)
 	{
-		tmp = pointer;
-		pointer = pointer->next;
-	}
-	else
-	{
-		start = *list;
-		while (pointer->next)
+		if (!links->room->is_in_queue && !links->room->is_used)
 		{
-			if (pointer->next->room == node)
-			{
-				tmp = pointer->next;
-				pointer->next = pointer->next->next;
-				break ;
-			}
-			pointer = pointer->next;
+			add_room_in_queue(queue, links->room);
+			CHANGE;
 		}
-		*list = start;
+		links = links->next;
 	}
-	free(tmp);
 }
 
-bool	kostil(void)
+void				second_algo_l(t_rooms *links,
+					t_rooms **queue, t_room *prev)
 {
-	t_rooms *path;
+	bool is_pushed;
 
-	if (room_in_way(g_global.start->links, g_global.end))
+	is_pushed = false;
+	while (links)
 	{
-		path = NULL;
-		add_room_in_queue(&path, g_global.start);
-		add_room_in_queue(&path, g_global.end);
-		create_ways(&g_global.no_link_way, path);
-		del_room(&g_global.start->links, g_global.end);
-		del_room(&g_global.end->links, g_global.start);
-		return (false);
+		if (!links->room->is_in_queue && !links->room->is_used)
+		{
+			if (!links->next || !is_pushed)
+			{
+				add_room_in_queue(queue, links->room);
+				CHANGE;
+				if (links->room->links->room != prev)
+					is_pushed = true;
+			}
+		}
+		links = links->next;
 	}
-	return (true);
 }
 
-void	first_algo()
+void				first_algo(void)
 {
 	t_rooms *way;
 
-	way = NULL;
-	while ((way = begin_first()))
-		create_ways(&g_global.no_link_way, way);
+	g_global.no_link_way = NULL;
+	CLEAR;
+	SECOND;
 	if (!g_global.no_link_way)
-		ERROR("ERROR")
+		ERROR("ERROR");
 }
 
-void	second_algo(void)
+void				second_algo(void)
 {
 	t_rooms *way;
 
-	way = NULL;
-	CLEAR
-	while ((way = begin_second()))
-		create_ways(&g_global.link_way, way);
+	g_global.link_way = NULL;
+	CLEAR;
+	FIRST;
 	if (!g_global.link_way)
-		ERROR("ERROR")
-}
-
-void	free_array(char **line)
-{
-	int	i;
-
-	i = 0;
-	if (!line)
-		return ;
-	while (line[i])
-	{
-		ft_strdel(&line[i]);
-		i++;
-	}
-	free(line);
-	line = NULL;
+		ERROR("ERROR");
 }

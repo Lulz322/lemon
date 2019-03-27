@@ -16,7 +16,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include "ft_printf.h"
-# include "get_next_line.h"
 
 typedef struct	s_list
 {
@@ -95,7 +94,8 @@ void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 void			ft_lstadd(t_list **alst, t_list *new);
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
-
-
+int				char_count(char c, char *line);
+void			free_array(char **qqq);
+int				line_count(char **line);
 
 #endif

@@ -12,37 +12,21 @@
 
 #include "lem_in.h"
 
-int		char_count(char c, char *line)
+void			color_on(int id)
 {
-	int i;
-	int counter;
-
-	if (!line || !c)
-		return (1488);
-	counter = 0;
-	i = -1;
-	while (line[++i])
-	{
-		if (line[i] == c)
-			counter++;
-	}
-	return (counter);
+	if (id % 6 == 0)
+		ft_printf("MRED(");
+	else if (id % 6 == 1)
+		ft_printf("MYLW(");
+	else if (id % 6 == 2)
+		ft_printf("MGRN(");
+	else if (id % 6 == 3)
+		ft_printf("MBLU(");
+	else if (id % 6 == 4)
+		ft_printf("MPRP(");
+	else if (id % 6 == 5)
+		ft_printf("MCYN(");
 }
-
-
-
-int		line_count(char **array)
-{
-	int i;
-
-	i = -1;
-	if (!array)
-		return (1337);
-	while (array[++i])
-		;
-	return (i);
-}
-
 
 void			errrorrororo(void)
 {
@@ -80,6 +64,32 @@ void			parsing_argc(int argc, char **argv)
 	}
 }
 
+int				input_data(char **line)
+{
+	int					gnl;
+	static unsigned int counter;
+
+	gnl = get_next_line(0, line);
+	if (!g_global.non_print)
+	{
+		if (g_global.color_mode)
+		{
+			if (*line)
+			{
+				color_on(counter);
+				ft_printf("%s\n", *line);
+			}
+		}
+		else
+		{
+			if (*line)
+				ft_printf("%s\n", *line);
+		}
+	}
+	counter++;
+	return (gnl);
+}
+
 int				main(int argc, char **argv)
 {
 	parsing_argc(argc, argv);
@@ -87,12 +97,9 @@ int				main(int argc, char **argv)
 		ta_nu_ladno();
 	set_cvars(0, 0);
 	check_first_last_room();
-	_KOSTIL(kostil());
+	KOSTIL(kostil());
 	first_algo();
 	second_algo();
-	if (set_eff(g_global.no_link_way) <= set_eff(g_global.link_way))
-		pustit_jukov(g_global.no_link_way);
-	else
-		pustit_jukov(g_global.link_way);
+	print_answer();
 	exit(0);
 }

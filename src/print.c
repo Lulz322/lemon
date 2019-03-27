@@ -12,30 +12,16 @@
 
 #include "lem_in.h"
 
-void	color_on(int id)
+void	print_steps(void)
 {
-	if (id % 6 == 0)
-		ft_printf("MRED(");
-	else if (id % 6 == 1)
-		ft_printf("MYLW(");
-	else if (id % 6 == 2)
-		ft_printf("MGRN(");
-	else if (id % 6 == 3)
-		ft_printf("MBLU(");
-	else if (id % 6 == 4)
-		ft_printf("MPRP(");
-	else if (id % 6 == 5)
-		ft_printf("MCYN(");
-}
+	t_ants *ants;
 
-void	print_steps(t_ants *ants)
-{
+	ants = g_global.c_ants;
 	while (ants)
 	{
 		if (g_global.color_mode)
 			color_on(ants->ant_id);
-		ft_printf("L%d-%s ", ants->ant_id,
-			ants->position->room->name);
+		ft_printf("L%d-%s ", ants->ant_id, ants->position->room->name);
 		ants = ants->next;
 	}
 	ft_printf("\n");
@@ -51,10 +37,10 @@ void	print_path(t_rooms *way)
 			ft_printf("[%s]", way->room->name);
 		way = way->next;
 	}
-	ft_putchar('\n');
+	ft_printf("\n");
 }
 
-void	print_pathes(t_ways *list)
+void	print_pathes(t_ways *way)
 {
 	int		count;
 	t_ways	*start;
@@ -64,21 +50,16 @@ void	print_pathes(t_ways *list)
 		ft_printf("\nChoosen Ways:)\n\n");
 	else
 		ft_printf("\nMBLU(Choosen MCYN(Ways:)\n\n");
-	start = list;
-	while (list)
+	start = way;
+	while (way)
 	{
 		if (g_global.color_mode)
-		{
-			if (count++ % 2 == 0)
-				ft_printf("MGRN(");
-			else
-				ft_printf("MPRP(");
-		}
-		print_path(list->way);
-		list = list->next;
+			color_on(count++);
+		print_path(way->way);
+		way = way->next;
 	}
 	ft_printf("MGRN()\n");
-	list = start;
+	way = start;
 }
 
 void	print_total_steps(int s_counter)

@@ -12,93 +12,65 @@
 
 #include "lem_in.h"
 
-void					reset_rooms_in_queue()
+void		reset_rooms_in_queue(void)
 {
 	t_rooms *room;
 
 	room = g_global.ways;
 	while (room)
 	{
-		room->room->prev_room = NULL;
 		room->room->is_in_queue = false;
+		room->room->prev_room = NULL;
 		room = room->next;
 	}
 	g_global.start->is_used = false;
 	g_global.end->is_in_queue = true;
 }
 
-void				work_with_links(t_rooms *links,
-										   t_rooms **queue, t_room *prev)
+t_rooms		*create_way(t_room *room)
 {
-	while (links)
+	t_rooms *way;
+
+	way = NULL;
+	while (room)
 	{
-		if (!links->room->is_in_queue
-			&& !links->room->is_used)
-		{
-			add_room_in_queue(queue, links->room);
-			CHANGE
-		}
-		links = links->next;
+		add_room_in_queue(&way, room);
+		room->is_used = true;
+		room = room->prev_room;
 	}
+	return (way);
 }
 
-void				work_with_links_2(t_rooms *links,
-											 t_rooms **queue, t_room *prev)
+t_rooms		*do_first_path(void)
 {
-	bool is_pushed;
-
-	is_pushed = false;
-	while (links)
-	{
-		if (!links->room->is_in_queue
-			&& !links->room->is_used)
-		{
-			if (!links->next || !is_pushed)
-			{
-				add_room_in_queue(queue, links->room);
-				CHANGE
-				if (links->room->links->room != prev)
-					is_pushed = true;
-			}
-		}
-		links = links->next;
-	}
-}
-
-
-
-t_rooms			*begin_first(void)
-{
-	t_rooms *queue;
+	t_rooms	*queue;
 	t_room	*room;
 
-	PREPARE(queue)
+	PREPARE(queue);
 	while (queue)
 	{
-		DEL_AND_SET(&queue, room)
+		DEL_AND_SET(&queue, room);
 		if (room != g_global.start)
-			work_with_links(room->links, &queue, room);
+			first_algo_l(room->links, &queue, room);
 		else
-			DEL(queue);
+			DEL;
 	}
 	return (NULL);
 }
 
-t_rooms			*begin_second(void)
+t_rooms		*do_second_path(void)
 {
-	t_rooms *queue;
+	t_rooms	*queue;
 	t_room	*room;
 
-	PREPARE(queue)
+	PREPARE(queue);
 	while (queue)
 	{
-		DEL_AND_SET(&queue, room)
+		DEL_AND_SET(&queue, room);
 		if (room != g_global.start)
-			work_with_links_2(room->links, &queue, room);
+			second_algo_l(room->links, &queue, room);
 		else
-			DEL(queue);
+			DEL;
 	}
 	return (NULL);
 }
-
-

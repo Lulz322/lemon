@@ -12,11 +12,6 @@
 
 #include "../includes/lem_in.h"
 
-void			change_mode(t_rooms_algo *qwe, int mode)
-{
-	qwe->mode = mode;
-}
-
 t_rooms_algo	*create_elem(char *data, int x, int y)
 {
 	t_rooms_algo *new;
@@ -44,7 +39,7 @@ void			add_data(t_rooms_algo **start, char *data, int x, int y)
 	*start = new;
 }
 
-t_links		*create_elem_link(int x, int y)
+t_links			*create_elem_link(int x, int y)
 {
 	t_links	*new;
 
@@ -67,19 +62,6 @@ void			add_data_link(t_links **start, int x, int y)
 	*start = new;
 }
 
-void			print_links(t_links *begin)
-{
-	while (begin->prev)
-		begin = begin->prev;
-	while (begin)
-	{
-		ft_printf("ROOM ID: %d LINKS w/ ID : %d\n",
-		begin->first_room_id, begin->second_room_id);
-		begin = begin->next;
-	}
-	ft_printf("\n");
-}
-
 void			print_data(t_rooms_algo *begin)
 {
 	while (begin->prev)
@@ -89,7 +71,7 @@ void			print_data(t_rooms_algo *begin)
 	ft_printf("MRED(length to start)\n");
 	while (begin)
 	{
-		ft_printf("MGRN(NAME: %s [%d])MGRN(MODE : %d) MRED( INDEX : %d)\n",
+		ft_printf("MGRN(NAME: %s [%d]MGRN(MODE : %d ",
 		begin->name, begin->room_id, begin->mode);
 		ft_printf(" MYLW(X: %d Y: %d   ", begin->x_coord, begin->y_coord);
 		ft_printf("MRED( INDEX : %d)\n", begin->index);

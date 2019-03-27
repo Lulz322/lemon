@@ -65,3 +65,23 @@ void	check_room_for_index(t_rooms_algo **rooms, t_links **start,
 		links = links->next;
 	}
 }
+
+int		line_count(char **line)
+{
+	int i;
+
+	i = 0;
+	if (!line)
+		return (0);
+	while (line[i])
+		i++;
+	return (i);
+}
+
+void	print_answer(void)
+{
+	if (set_eff(g_global.no_link_way) <= set_eff(g_global.link_way))
+		pustit_jukov(g_global.no_link_way);
+	else
+		pustit_jukov(g_global.link_way);
+}

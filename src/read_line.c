@@ -12,32 +12,6 @@
 
 #include "lem_in.h"
 
-int		input_data(char **line)
-{
-	int			gnl;
-	static unsigned  int counter;
-
-	counter++;
-	gnl = get_next_line(0, line);
-	if (!g_global.non_print)
-	{
-		if (g_global.color_mode)
-		{
-			if (*line)
-			{
-				color_on(counter);
-				ft_printf("%s\n", *line);
-			}
-		}
-		else
-		{
-			if (*line)
-				ft_printf("%s\n", *line);
-		}
-	}
-	return (gnl);
-}
-
 void	set_ants(char *line, int *mode, int i)
 {
 	int		tmp;
@@ -67,11 +41,18 @@ int		check_comment(char *line)
 	return (0);
 }
 
+void	check_line_aa(char *line)
+{
+	if (line[0] == 'L')
+		ERROR("Forbidden first charchter'L'");
+}
+
 void	set_cvars_two(int *mode, int i, char *line)
 {
 	if (ft_strchr(line, '-') && char_count(' ', line) == 0
 		&& char_count('-', line) == 1 && g_global.ants != 0)
 		*mode = 2;
+	check_line_aa(line);
 	if (*mode == 0)
 		set_ants(line, mode, i);
 	else if (*mode == 1)
@@ -88,9 +69,7 @@ void	set_cvars(int mode, int i)
 	{
 		while (1)
 		{
-			if (!input_data(&line) && mode)
-				return ;
-			if (ft_strequ(line, ""))
+			if (!input_data(&line))
 				return ;
 			else if (line[0] == '#')
 			{

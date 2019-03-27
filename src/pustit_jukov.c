@@ -6,27 +6,42 @@
 /*   By: iruban <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 13:00:51 by iruban            #+#    #+#             */
-/*   Updated: 2019/03/19 13:00:53 by iruban           ###   ########.fr       */
+/*   Updated: 2019/03/27 16:56:57 by iruban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	step(t_ants *ants)
+void				del_end_room(void)
 {
-	t_ants *buf;
+	t_ants *tmp;
 
-	buf = ants;
-	while (buf)
+	tmp = g_global.c_ants;
+	while (tmp)
 	{
-		buf->position = buf->position->next;
-		buf = buf->next;
+		if (tmp->position->room == g_global.end)
+			remove_ant(tmp);
+		tmp = tmp->next;
 	}
 }
 
-int		count_ways_sum(t_ways *start, t_ways *curr)
+void				one_step(void)
 {
-	int ways_sum;
+	t_ants *next;
+
+	next = g_global.c_ants;
+	while (next)
+	{
+		next->position = next->position->next;
+		next = next->next;
+	}
+	print_steps();
+	del_end_room();
+}
+
+unsigned int		all_count(t_ways *start, t_ways *curr)
+{
+	unsigned int ways_sum;
 
 	ways_sum = 0;
 	while (start != curr)
@@ -37,65 +52,42 @@ int		count_ways_sum(t_ways *start, t_ways *curr)
 	return (ways_sum);
 }
 
-void	new_ants(t_ants **ants, t_ways *pathes)
+void				new_ants(t_ways *way)
 {
 	t_ways	*start;
 
-	start = pathes;
-	while (pathes && g_global.ants - g_global.ant_counter != 0)
+	start = way;
+	while (way)
 	{
 		if (start->way->room == g_global.start &&
-			start->way->next->room == g_global.end)
+				start->way->next->room == g_global.end)
 		{
-			g_global.ant_counter++;
-			create_ant(ants, pathes->way);
+			CHANGE_TWO;
 		}
 		else
 		{
 			if (g_global.ants - g_global.ant_counter >
-				count_ways_sum(start, pathes))
-			{
-				g_global.ant_counter++;
-				create_ant(ants, pathes->way);
-			}
-			pathes = pathes->next;
+				(int)all_count(start, way))
+				CHANGE_TWO;
+			way = way->next;
 		}
 	}
-	pathes = start;
+	way = start;
 }
 
-void	remove_finishers(t_ants **ants)
+void				pustit_jukov(t_ways *way)
 {
-	t_ants *tmp;
-
-	tmp = *ants;
-	while (tmp)
-	{
-		if (tmp->position->room == g_global.end)
-			remove_ant(ants, tmp);
-		tmp = tmp->next;
-	}
-}
-
-void	pustit_jukov(t_ways *pathes)
-{
-	t_ants			*ants;
 	int				s_counter;
 
-	ants = NULL;
+	g_global.c_ants = NULL;
 	g_global.ant_counter = 0;
 	s_counter = 0;
-	new_ants(&ants, pathes);
-	while (ants)
-	{
-		step(ants);
-		print_steps(ants);
-		remove_finishers(&ants);
-		new_ants(&ants, pathes);
-		s_counter++;
-	}
+	new_ants(way);
+	ft_printf("\n");
+	while (g_global.c_ants && ++s_counter)
+		ANTS(way);
 	if (g_global.print_pathes)
-		print_pathes(pathes);
+		print_pathes(way);
 	if (g_global.print_steps)
 		print_total_steps(s_counter);
 }

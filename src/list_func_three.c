@@ -12,20 +12,6 @@
 
 #include "lem_in.h"
 
-t_rooms					*create_way(t_room *room)
-{
-	t_rooms *path;
-
-	path = NULL;
-	while (room)
-	{
-		add_room_in_queue(&path, room);
-		room->is_used = true;
-		room = room->prev_room;
-	}
-	return (path);
-}
-
 void	delete_way(t_rooms *way)
 {
 	t_rooms *start;
@@ -44,38 +30,6 @@ void	delete_way(t_rooms *way)
 	free(way);
 }
 
-t_ways	*create_list_of_way(t_rooms *way)
-{
-	t_ways *ways;
-
-	_ERROR_MALLOC(ways = malloc(sizeof(t_ways)));
-	ways->way = way;
-	ways->next = NULL;
-	return (ways);
-}
-
-void	create_ways(t_ways **list,
-						t_rooms *way)
-{
-	t_ways *start;
-	t_ways *wheee;
-
-	wheee = *list;
-	if (!wheee)
-		wheee = create_list_of_way(way);
-	else
-	{
-		start = wheee;
-		while (wheee->next != NULL)
-			wheee = wheee->next;
-		_ERROR_MALLOC(wheee->next = malloc(sizeof(t_ways)));
-		wheee->next->way = way;
-		wheee->next->next = NULL;
-		wheee = start;
-	}
-	*list = wheee;
-}
-
 int		way_len(t_rooms *list)
 {
 	int i;
@@ -87,4 +41,40 @@ int		way_len(t_rooms *list)
 		list = list->next;
 	}
 	return (i - 1);
+}
+
+int		char_count(char c, char *line)
+{
+	int i;
+	int res;
+
+	res = 0;
+	i = -1;
+	while (line[++i])
+	{
+		if (line[i] == c)
+			res++;
+	}
+	return (res);
+}
+
+void	free_array(char **line)
+{
+	int	i;
+
+	i = 0;
+	if (!line)
+		return ;
+	while (line[i])
+	{
+		ft_strdel(&line[i]);
+		i++;
+	}
+	free(line);
+	line = NULL;
+}
+
+void	change_mode(t_rooms_algo *qwe, int mode)
+{
+	qwe->mode = mode;
 }
