@@ -111,7 +111,7 @@ bool		set_rooms_and_links(t_rooms_algo **rooms, t_links **links)
 		while (1)
 		{
 			get_next_line(0, &line);
-			if (!ft_strcmp(line, ""))
+			if (!line || !ft_strcmp(line, ""))
 				return (true);
 			if (line[0] == '#')
 			{

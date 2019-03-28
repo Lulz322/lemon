@@ -47,7 +47,7 @@ void	create_link(char *line, int i)
 		ERROR("Link can't be Start/End Room!");
 	array = ft_strsplit(line, '-');
 	if (char_count(' ', line) != 0 || line_count(array) != 2)
-		ERROR("ERROR");
+		ERROR("Link Error");
 	first_room = find_room_for_link(array[0]);
 	second_room = find_room_for_link(array[1]);
 	free_array(array);

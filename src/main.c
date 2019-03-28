@@ -37,9 +37,10 @@ void			errrorrororo(void)
 	ft_printf("\tMRED(-n)\t ̶D̶o̶ ̶n̶o̶t̶ ̶p̶r̶i̶n̶t̶ ̶i̶n̶p̶u̶t ̶d̶a̶t̶a̶\n");
 	ft_printf("\tMRED(-a)\tMPRP(All MBLU(data)\n");
 	ft_printf("\t  \tMRED(DOES NOT WORKING W/ OTHER)\n");
+	exit(0);
 }
 
-void			parsing_argc(int argc, char **argv)
+bool			parsing_argc(int argc, char **argv)
 {
 	int i;
 
@@ -57,11 +58,9 @@ void			parsing_argc(int argc, char **argv)
 		else if (ft_strequ(argv[i], "-a"))
 			g_global.second_algo = true;
 		else
-		{
-			errrorrororo();
-			exit(0);
-		}
+			return (false);
 	}
+	return (true);
 }
 
 int				input_data(char **line)
@@ -92,14 +91,13 @@ int				input_data(char **line)
 
 int				main(int argc, char **argv)
 {
-	parsing_argc(argc, argv);
-	if (g_global.second_algo == true)
-		ta_nu_ladno();
-	set_cvars(0, 0);
-	check_first_last_room();
-	KOSTIL(kostil());
-	first_algo();
-	second_algo();
-	print_answer();
+	_PARS(parsing_argc(argc, argv));
+	_AFLAG;
+	_SET_DATA(0, 0);
+	_SET_FIRST_WAY;
+	_SET_SECOND_WAY;
+	_PRINT;
+	_PRINT_T;
+	system("leaks lem-in");
 	exit(0);
 }

@@ -42,6 +42,7 @@ void	check_first_last_room(void)
 		ERROR("Where's start room O_o?");
 	if (!g_global.end)
 		ERROR("Where's end room O_o?");
+	KOSTIL(kostil());
 }
 
 void	rooms_mode(char *line, int *mode, int i)

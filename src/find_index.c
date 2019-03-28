@@ -77,11 +77,3 @@ int		line_count(char **line)
 		i++;
 	return (i);
 }
-
-void	print_answer(void)
-{
-	if (set_eff(g_global.no_link_way) <= set_eff(g_global.link_way))
-		pustit_jukov(g_global.no_link_way);
-	else
-		pustit_jukov(g_global.link_way);
-}

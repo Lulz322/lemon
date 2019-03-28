@@ -25,3 +25,30 @@ int	ta_nu_ladno(void)
 	print_data(qwe);
 	exit(0);
 }
+
+void		reset_used_rooms(void)
+{
+	t_rooms *rooms;
+
+	rooms = g_global.ways;
+	while (rooms)
+	{
+		rooms->room->is_used = false;
+		rooms = rooms->next;
+	}
+}
+
+void					reset_rooms_in_queue(void)
+{
+	t_rooms *rooms;
+
+	rooms = g_global.ways;
+	while (rooms)
+	{
+		rooms->room->is_in_queue = false;
+		rooms->room->prev_room = NULL;
+		rooms = rooms->next;
+	}
+	g_global.start->is_used = false;
+	g_global.end->is_in_queue = true;
+}

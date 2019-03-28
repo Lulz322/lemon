@@ -62,6 +62,34 @@ void			add_data_link(t_links **start, int x, int y)
 	*start = new;
 }
 
+void			print_data_two(t_rooms_algo *begin)
+{
+	while (begin)
+	{
+		ft_printf("MGRN(NAME: %s [%d]MGRN(MODE : %d ",
+				begin->name, begin->room_id, begin->mode);
+		ft_printf(" MYLW(X: %d Y: %d   ", begin->x_coord, begin->y_coord);
+		ft_printf("MRED( INDEX : %d)\n", begin->index);
+		begin = begin->next;
+	}
+}
+
+void			print_data_raduga(t_rooms_algo *begin)
+{
+	int i;
+
+	i = 0;
+	while (begin)
+	{
+		color_on(i++);
+		ft_printf("NAME: %s [%d]MODE : %d ",
+				begin->name, begin->room_id, begin->mode);
+		ft_printf(" X: %d Y: %d   ", begin->x_coord, begin->y_coord);
+		ft_printf(" INDEX : %d\n", begin->index);
+		begin = begin->next;
+	}
+}
+
 void			print_data(t_rooms_algo *begin)
 {
 	while (begin->prev)
@@ -69,13 +97,18 @@ void			print_data(t_rooms_algo *begin)
 	ft_printf("MGRN(ROOM_NAME [ROOM_ID]) MYLW(X_COORD: Y_COORD:\n");
 	ft_printf("MGRN(MODE:\n1->start\n2->end\n0-simple\n");
 	ft_printf("MRED(length to start)\n");
-	while (begin)
+	if (g_global.color_mode)
+		print_data_raduga(begin);
+	else
 	{
-		ft_printf("MGRN(NAME: %s [%d]MGRN(MODE : %d ",
-		begin->name, begin->room_id, begin->mode);
-		ft_printf(" MYLW(X: %d Y: %d   ", begin->x_coord, begin->y_coord);
-		ft_printf("MRED( INDEX : %d)\n", begin->index);
-		begin = begin->next;
+		while (begin)
+		{
+			ft_printf("NAME: %s [%d]MODE : %d ",
+					begin->name, begin->room_id, begin->mode);
+			ft_printf(" X: %d Y: %d   ", begin->x_coord, begin->y_coord);
+			ft_printf(" INDEX : %d\n", begin->index);
+			begin = begin->next;
+		}
 	}
 	ft_printf("\n");
 }

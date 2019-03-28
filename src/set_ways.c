@@ -12,72 +12,94 @@
 
 #include "../includes/lem_in.h"
 
-void				reset_used_rooms(void)
+t_rooms		*set_way(void)
 {
-	t_rooms *rooms;
+	t_rooms *way;
+	t_room	*room;
 
-	rooms = g_global.ways;
-	while (rooms)
+	room = g_global.start;
+	way = NULL;
+	while (room)
 	{
-		rooms->room->is_used = false;
-		rooms = rooms->next;
+		add_room_in_queue(&way, room);
+		room->is_used = true;
+		room = room->prev_room;
 	}
+	return (way);
 }
 
-void				first_algo_l(t_rooms *links,
-					t_rooms **queue, t_room *prev)
+t_rooms					*first_algo(void)
 {
-	while (links)
-	{
-		if (!links->room->is_in_queue && !links->room->is_used)
-		{
-			add_room_in_queue(queue, links->room);
-			CHANGE;
-		}
-		links = links->next;
-	}
-}
+	t_rooms	*queue;
+	t_room	*room;
+	t_rooms *links;
 
-void				second_algo_l(t_rooms *links,
-					t_rooms **queue, t_room *prev)
-{
-	bool is_pushed;
-
-	is_pushed = false;
-	while (links)
+	PREPARE(queue);
+	while (queue)
 	{
-		if (!links->room->is_in_queue && !links->room->is_used)
+		DEL_AND_SET(&queue, room);
+		if (room != g_global.start)
 		{
-			if (!links->next || !is_pushed)
+			links = room->links;
+			while (links)
 			{
-				add_room_in_queue(queue, links->room);
-				CHANGE;
-				if (links->room->links->room != prev)
-					is_pushed = true;
+				if (!links->room->is_in_queue && !links->room->is_used)
+					_F_IF_YO(&queue, links->room);
+				links = links->next;
 			}
 		}
-		links = links->next;
+		else
+			DEL(queue);
 	}
+	return (NULL);
 }
 
-void				first_algo(void)
+t_rooms	*second_algo(void)
 {
-	t_rooms *way;
+	t_rooms	*queue;
+	t_room	*room;
+	t_rooms *links;
+	bool	is_pushed;
 
-	g_global.no_link_way = NULL;
-	CLEAR;
-	SECOND;
-	if (!g_global.no_link_way)
-		ERROR("ERROR");
+	PREPARE(queue);
+	while (queue)
+	{
+		is_pushed = false;
+		DEL_AND_SET(&queue, room);
+		if (room != g_global.start)
+		{
+			links = room->links;
+			while (links)
+			{
+				if (!links->room->is_in_queue && !links->room->is_used)
+					_F_IF(links->next, is_pushed, &queue, links->room);
+				links = links->next;
+			}
+		}
+		else
+			DEL(queue);
+	}
+	return (NULL);
 }
 
-void				second_algo(void)
+bool		group_ways_two(void)
 {
-	t_rooms *way;
+	t_rooms *tmp;
 
-	g_global.link_way = NULL;
 	CLEAR;
-	FIRST;
+	_FIRST(tmp);
 	if (!g_global.link_way)
-		ERROR("ERROR");
+		return (false);
+	return (true);
+}
+
+bool		group_ways(void)
+{
+	t_rooms *tmp;
+
+	CLEAR;
+	_SECOND(tmp);
+	if (!g_global.no_link_way)
+		return (false);
+	return (true);
 }

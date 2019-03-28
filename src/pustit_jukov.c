@@ -6,7 +6,7 @@
 /*   By: iruban <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 13:00:51 by iruban            #+#    #+#             */
-/*   Updated: 2019/03/27 16:56:57 by iruban           ###   ########.fr       */
+/*   Updated: 2019/03/27 16:26:37 by iruban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,17 @@ void				new_ants(t_ways *way)
 	t_ways	*start;
 
 	start = way;
-	while (way)
+	while (way && g_global.ant_counter != g_global.ants)
 	{
 		if (start->way->room == g_global.start &&
-				start->way->next->room == g_global.end)
+			start->way->next->room == g_global.end)
 		{
 			CHANGE_TWO;
 		}
 		else
 		{
 			if (g_global.ants - g_global.ant_counter >
-				(int)all_count(start, way))
+						(int)all_count(start, way))
 				CHANGE_TWO;
 			way = way->next;
 		}

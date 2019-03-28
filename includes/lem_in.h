@@ -6,7 +6,7 @@
 /*   By: iruban <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 14:42:13 by iruban            #+#    #+#             */
-/*   Updated: 2019/03/27 16:55:22 by iruban           ###   ########.fr       */
+/*   Updated: 2019/03/27 14:42:15 by iruban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@
 # include "../libft/includes/get_next_line.h"
 # define ER_START			"\033[41m"
 # define ER_END				"\033[40m"
+# define F_WAY g_global.link_way
+# define S_WAY g_global.no_link_way
 # define ERROR(ex) {ft_printf("%s%s%s\n",ER_START,ex,ER_END);exit(0);};
+# define _PARS(ex) {if (!ex){errrorrororo();}};
+# define _AFLAG {if (g_global.second_algo == true){ta_nu_ladno();}}
 # define _ERROR_NOTIS_SET(ex) if(!ex) {ERROR("ERROR IN ROMMS/LINKS")}
 # define _ERROR_NOTIS_LINE(ex) if(!ex) {ERROR("MRED(ERROR IN LINE)")}
 # define _ERROR_NOTIS_ROOM(ex) if(!ex) {ERROR("MRED(ERROR IN ROOM)")}
@@ -27,21 +31,29 @@
 # define _ERROR_NOTIS_LINK(ex) if(!ex) {ERROR("ERROR IN ROOM")}
 # define _ERROR_NOTIS_INDEX(ex) if(!ex) {ERROR("MRED(ERROR IN ROOM)")}
 # define _ERROR_NOTIS_WAY(ex) if(!ex) {ERROR("MRED(ERROR IN WAY)");
-# define DEL {delete_way(queue);return (create_way(g_global.start));};
+# define DEL(ex) {delete_way(ex);return (set_way());};
 # define CREATE(ex) {room = create_elem_room(ex);}
-# define CHANGE {links->room->is_in_queue = true;links->room->prev_room = prev;}
+# define CHANGE {links->room->is_in_queue = true;links->room->prev_room = room;}
 # define PRP_NEXT {reset_rooms_in_queue();}
 # define R_U_R {reset_used_rooms();}
 # define PREPARE(ex) {ex = create_list_of_rooms(g_global.end);PRP_NEXT}
 # define CLEAR {reset_rooms_in_queue();R_U_R}
-# define KOSTIL(ex) if (!ex){pustit_jukov(g_global.no_link_way);return (1337);};
+# define KOSTIL(ex) if (!ex){pustit_jukov(g_global.no_link_way);exit(0);};
 # define DEL_AND_SET(ex, ex2) {ex2 = set_room(ex);free_queue(ex);}
-# define G1 g_global.link_way
-# define G2 g_global.no_link_way
-# define FIRST {while((way = do_second_path())){create_ways(&G1, way);}}
-# define SECOND {while((way = do_first_path())){create_ways(&G2, way);}}
-# define CHANGE_TWO {g_global.ant_counter++;create_ant(way->way);};
+# define _FIRST(ex) {while((ex = first_algo())){create_ways(&F_WAY, ex);}}
+# define _SECOND(ex) {while((ex = second_algo())){create_ways(&S_WAY, ex);}}
+# define CHANGE_TWO {g_global.ant_counter++;create_ant(way->way);}
 # define ANTS(ex) {one_step();new_ants(ex);}
+# define _SET_FIRST_WAY {if(!group_ways()){ERROR("ERROR")}};
+# define _SET_SECOND_WAY {if(!group_ways_two()){ERROR("ERROR")}};
+# define _SET_DATA(n1, n2) {set_cvars(n1, n2);check_first_last_room();}
+# define _PRINT {if (set_eff(F_WAY) <= set_eff(S_WAY)){pustit_jukov(F_WAY);}}
+# define _PRINT_T {if (set_eff(F_WAY) > set_eff(S_WAY)){pustit_jukov(S_WAY);}};
+# define _PUSH {if (links->room->links->room != room){is_pushed = true;}};
+# define _F_IF_YO(ex, ex1) {_ADD(ex, ex1);CHANGE;};
+# define _ADD(ex, ex1) {add_room_in_queue(ex, ex1);};
+# define _F_IF(ex, ex1, ex2, ex3) if(ex || !ex1){_ADD(ex2, ex3);CHANGE;_PUSH;}
+
 
 enum	e_bool { false, true };
 
@@ -157,17 +169,16 @@ void					print_pathes(t_ways *list);
 void					print_total_steps(int total);
 void					create_ant(t_rooms *room);
 void					remove_ant(t_ants *ant);
-void					print_answer();
 t_rooms					*do_first_path();
 t_rooms					*do_second_path();
 t_ants					*create_list_of_ants(t_rooms *room);
 void					reset_rooms_in_queue();
-void					first_algo();
+t_rooms					*first_algo();
 void					first_algo_l(t_rooms *links,
 						t_rooms **queue, t_room *prev);
 void					second_algo_l(t_rooms *links,
 						t_rooms **queue, t_room *prev);
-void					second_algo();
+t_rooms					*second_algo();
 void					free_queue(t_rooms **way);
 t_room					*set_room(t_rooms **way);
 void					check_first_last_room(void);
@@ -186,4 +197,7 @@ void					check_room_for_index(t_rooms_algo **rooms,
 void					color_on(int id);
 bool					kostil(void);
 bool					error_case(t_rooms *new, t_room *room);
+bool					group_ways_two();
+bool					group_ways();
+void		reset_used_rooms(void);
 #endif
