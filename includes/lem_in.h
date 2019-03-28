@@ -53,7 +53,7 @@
 # define _F_IF_YO(ex, ex1) {_ADD(ex, ex1);CHANGE;};
 # define _ADD(ex, ex1) {add_room_in_queue(ex, ex1);};
 # define _F_IF(ex, ex1, ex2, ex3) if(ex || !ex1){_ADD(ex2, ex3);CHANGE;_PUSH;}
-
+# define CHECK_LINE(ex) {if (ft_strequ("", ex)){ERROR("ERROR")}};
 
 enum	e_bool { false, true };
 
@@ -199,5 +199,7 @@ bool					kostil(void);
 bool					error_case(t_rooms *new, t_room *room);
 bool					group_ways_two();
 bool					group_ways();
-void		reset_used_rooms(void);
+void					reset_used_rooms(void);
+t_rooms_algo			*create_elem(char *data, int x, int y);
+t_links					*create_elem_link(int x, int y);
 #endif

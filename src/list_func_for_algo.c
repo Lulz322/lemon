@@ -51,29 +51,6 @@ t_links			*create_elem_link(int x, int y)
 	return (new);
 }
 
-void			add_data_link(t_links **start, int x, int y)
-{
-	t_links *new;
-
-	new = create_elem_link(x, y);
-	new->next = *start;
-	if (new->next)
-		new->next->prev = new;
-	*start = new;
-}
-
-void			print_data_two(t_rooms_algo *begin)
-{
-	while (begin)
-	{
-		ft_printf("MGRN(NAME: %s [%d]MGRN(MODE : %d ",
-				begin->name, begin->room_id, begin->mode);
-		ft_printf(" MYLW(X: %d Y: %d   ", begin->x_coord, begin->y_coord);
-		ft_printf("MRED( INDEX : %d)\n", begin->index);
-		begin = begin->next;
-	}
-}
-
 void			print_data_raduga(t_rooms_algo *begin)
 {
 	int i;

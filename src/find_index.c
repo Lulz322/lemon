@@ -77,3 +77,14 @@ int		line_count(char **line)
 		i++;
 	return (i);
 }
+
+void	add_data_link(t_links **start, int x, int y)
+{
+	t_links *new;
+
+	new = create_elem_link(x, y);
+	new->next = *start;
+	if (new->next)
+		new->next->prev = new;
+	*start = new;
+}

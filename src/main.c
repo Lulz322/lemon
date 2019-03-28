@@ -69,13 +69,15 @@ int				input_data(char **line)
 	static unsigned int counter;
 
 	gnl = get_next_line(0, line);
+	if (ft_strequ(*line, ""))
+		ERROR("Empty Line");
 	if (!g_global.non_print)
 	{
 		if (g_global.color_mode)
 		{
 			if (*line)
 			{
-				color_on(counter);
+				color_on(counter++);
 				ft_printf("%s\n", *line);
 			}
 		}
@@ -85,7 +87,6 @@ int				input_data(char **line)
 				ft_printf("%s\n", *line);
 		}
 	}
-	counter++;
 	return (gnl);
 }
 

@@ -12,7 +12,7 @@
 
 #include "lem_in.h"
 
-int	ta_nu_ladno(void)
+int			ta_nu_ladno(void)
 {
 	t_rooms_algo	*qwe;
 	t_links			*za_sho;
@@ -38,7 +38,7 @@ void		reset_used_rooms(void)
 	}
 }
 
-void					reset_rooms_in_queue(void)
+void		reset_rooms_in_queue(void)
 {
 	t_rooms *rooms;
 

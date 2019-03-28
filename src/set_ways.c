@@ -12,7 +12,7 @@
 
 #include "../includes/lem_in.h"
 
-t_rooms		*set_way(void)
+t_rooms			*set_way(void)
 {
 	t_rooms *way;
 	t_room	*room;
@@ -28,7 +28,7 @@ t_rooms		*set_way(void)
 	return (way);
 }
 
-t_rooms					*first_algo(void)
+t_rooms			*first_algo(void)
 {
 	t_rooms	*queue;
 	t_room	*room;
@@ -54,7 +54,7 @@ t_rooms					*first_algo(void)
 	return (NULL);
 }
 
-t_rooms	*second_algo(void)
+t_rooms			*second_algo(void)
 {
 	t_rooms	*queue;
 	t_room	*room;
@@ -82,7 +82,7 @@ t_rooms	*second_algo(void)
 	return (NULL);
 }
 
-bool		group_ways_two(void)
+bool			group_ways_two(void)
 {
 	t_rooms *tmp;
 
@@ -93,7 +93,7 @@ bool		group_ways_two(void)
 	return (true);
 }
 
-bool		group_ways(void)
+bool			group_ways(void)
 {
 	t_rooms *tmp;
 
