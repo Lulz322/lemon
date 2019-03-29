@@ -66,7 +66,7 @@ void				check_errors_in_room(char *line, char **array)
 	char	*y;
 
 	if (line_count(array) != 3 || char_count(' ', line) != 2)
-		ERROR("Room definition example: ROOM_NAME X_COORD Y_COORD");
+		ERROR("Room ERROR \nexample: ROOM_NAME X_COORD Y_COORD");
 	if (!check_coords(ft_atoi(array[1]), ft_atoi(array[2])))
 		ERROR("Simmilar Coords!");
 	x = ft_itoa(ft_atoi(array[1]));
