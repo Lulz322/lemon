@@ -36,9 +36,7 @@ void	create_ways(t_ways **list,
 		start = wheee;
 		while (wheee->next != NULL)
 			wheee = wheee->next;
-		_ERROR_MALLOC(wheee->next = malloc(sizeof(t_ways)));
-		wheee->next->way = way;
-		wheee->next->next = NULL;
+		wheee->next = create_list_of_way(way);
 		wheee = start;
 	}
 	*list = wheee;
@@ -95,14 +93,11 @@ void	create_ant(t_rooms *room)
 		start = whee;
 		while (start->next)
 			start = start->next;
-		_ERROR_MALLOC(start->next = malloc(sizeof(t_ants)));
+		start->next = create_list_of_ants(room);
 		if (start->next)
 			start->next->prev = start;
 		if (start->next)
 			start->next->prev = start;
-		start->next->ant_id = g_global.ant_counter;
-		start->next->position = room;
-		start->next->next = NULL;
 	}
 	g_global.c_ants = whee;
 }

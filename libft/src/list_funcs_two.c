@@ -61,13 +61,11 @@ void				add_room_in_queue(t_rooms **list, t_room *room)
 	else
 	{
 		start = *list;
-		while (start->next != NULL)
+		while (start->next)
 			start = start->next;
-		_ERROR_MALLOC(start->next = malloc(sizeof(t_rooms)));
+		start->next = create_list_of_rooms(room);
 		if (start->next)
 			start->next->prev = start;
-		start->next->room = room;
-		start->next->next = NULL;
 	}
 }
 
@@ -86,11 +84,9 @@ bool				create_room(t_rooms **list, t_room *room)
 		start = new;
 		while (start->next)
 			start = start->next;
-		_ERROR_MALLOC(start->next = malloc(sizeof(t_rooms)));
+		start->next = create_list_of_rooms(room);
 		if (start->next)
 			start->next->prev = new;
-		start->next->room = room;
-		start->next->next = NULL;
 	}
 	*list = new;
 	return (true);

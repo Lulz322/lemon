@@ -12,22 +12,10 @@
 
 #include "lem_in.h"
 
-void				del_end_room(void)
-{
-	t_ants *tmp;
-
-	tmp = g_global.c_ants;
-	while (tmp)
-	{
-		if (tmp->position->room == g_global.end)
-			remove_ant(tmp);
-		tmp = tmp->next;
-	}
-}
-
 void				one_step(void)
 {
 	t_ants *next;
+	t_ants *tmp;
 
 	next = g_global.c_ants;
 	while (next)
@@ -35,8 +23,14 @@ void				one_step(void)
 		next->position = next->position->next;
 		next = next->next;
 	}
+	tmp = g_global.c_ants;
 	print_steps();
-	del_end_room();
+	while (tmp)
+	{
+		if (tmp->position->room == g_global.end)
+			remove_ant(tmp);
+		tmp = tmp->next;
+	}
 }
 
 unsigned int		all_count(t_ways *start, t_ways *curr)
@@ -59,8 +53,8 @@ void				new_ants(t_ways *way)
 	start = way;
 	while (way && g_global.ant_counter != g_global.ants)
 	{
-		_S_T;
 		_S_O(g_global.start, g_global.end);
+		_S_T;
 		way = way->next;
 	}
 	way = start;
