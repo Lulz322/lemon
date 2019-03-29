@@ -35,11 +35,8 @@ int		way_len(t_rooms *list)
 	int i;
 
 	i = 0;
-	while (list)
-	{
-		i++;
+	while (list && ++i)
 		list = list->next;
-	}
 	return (i - 1);
 }
 

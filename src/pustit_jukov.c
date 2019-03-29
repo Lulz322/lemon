@@ -59,18 +59,9 @@ void				new_ants(t_ways *way)
 	start = way;
 	while (way && g_global.ant_counter != g_global.ants)
 	{
-		if (start->way->room == g_global.start &&
-			start->way->next->room == g_global.end)
-		{
-			CHANGE_TWO;
-		}
-		else
-		{
-			if (g_global.ants - g_global.ant_counter >
-						(int)all_count(start, way))
-				CHANGE_TWO;
-			way = way->next;
-		}
+		_S_T;
+		_S_O(g_global.start, g_global.end);
+		way = way->next;
 	}
 	way = start;
 }
@@ -82,8 +73,8 @@ void				pustit_jukov(t_ways *way)
 	g_global.c_ants = NULL;
 	g_global.ant_counter = 0;
 	s_counter = 0;
-	new_ants(way);
 	ft_printf("\n");
+	new_ants(way);
 	while (g_global.c_ants && ++s_counter)
 		ANTS(way);
 	if (g_global.print_pathes)

@@ -99,6 +99,5 @@ int				main(int argc, char **argv)
 	_SET_SECOND_WAY;
 	_PRINT;
 	_PRINT_T;
-	system("leaks lem-in");
 	exit(0);
 }

@@ -54,6 +54,12 @@
 # define _ADD(ex, ex1) {add_room_in_queue(ex, ex1);};
 # define _F_IF(ex, ex1, ex2, ex3) if(ex || !ex1){_ADD(ex2, ex3);CHANGE;_PUSH;}
 # define CHECK_LINE(ex) {if (ft_strequ("", ex)){ERROR("ERROR")}};
+# define JUKI g_global.ants
+# define JUKI_S g_global.ant_counter
+# define WAY start->way->room
+# define WAY_TWO start->way->next->room
+# define _S_O(ex, ex1) {if (WAY == ex && WAY_TWO ==  ex1)CHANGE_TWO;}
+# define _S_T {if (JUKI - JUKI_S >(int)all_count(start, way))CHANGE_TWO};
 
 enum	e_bool { false, true };
 
