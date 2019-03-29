@@ -60,6 +60,10 @@
 # define WAY_TWO start->way->next->room
 # define _S_O(ex, ex1) {if (WAY == ex && WAY_TWO ==  ex1)CHANGE_TWO;}
 # define _S_T {if (JUKI - JUKI_S >(int)all_count(start, way))CHANGE_TWO};
+# define G_C g_global.c_ants
+# define RUN(ex, ex1) {new_ants(ex);while(G_C && ex1){ANTS(ex);}};
+# define _PRINT_W {if (g_global.print_ways){print_pathes(way);}};
+# define _PRINT_S {if (g_global.print_steps){print_total_steps(s_counter);}};
 
 enum	e_bool { false, true };
 
@@ -142,7 +146,7 @@ typedef struct			s_global
 	t_room				*start;
 	t_room				*end;
 	bool				color_mode;
-	bool				print_pathes;
+	bool				print_ways;
 	bool				print_steps;
 	bool				non_print;
 	bool				second_algo;

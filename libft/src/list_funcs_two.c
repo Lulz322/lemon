@@ -56,7 +56,7 @@ void				add_room_in_queue(t_rooms **list, t_room *room)
 {
 	t_rooms	*start;
 
-	if (*list == NULL)
+	if (!*list)
 		*list = create_list_of_rooms(room);
 	else
 	{

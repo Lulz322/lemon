@@ -71,14 +71,9 @@ void				pustit_jukov(t_ways *way)
 	int				s_counter;
 
 	g_global.c_ants = NULL;
-	g_global.ant_counter = 0;
 	s_counter = 0;
 	ft_printf("\n");
-	new_ants(way);
-	while (g_global.c_ants && ++s_counter)
-		ANTS(way);
-	if (g_global.print_pathes)
-		print_pathes(way);
-	if (g_global.print_steps)
-		print_total_steps(s_counter);
+	RUN(way, ++s_counter);
+	_PRINT_W;
+	_PRINT_S;
 }

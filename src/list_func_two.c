@@ -65,7 +65,7 @@ void	create_link(char *line, int i)
 		ERROR("Link duplication");
 }
 
-int		set_eff(t_ways *list)
+int		set_eff(t_ways *way)
 {
 	int len;
 	int ways;
@@ -73,11 +73,11 @@ int		set_eff(t_ways *list)
 
 	ways = 0;
 	len = 0;
-	while (list)
+	while (way)
 	{
-		len += way_len(list->way);
+		len += way_len(way->way);
 		ways++;
-		list = list->next;
+		way = way->next;
 	}
 	length = (g_global.ants + len) / ways - 1;
 	if ((g_global.ants + len) % ways != 0)

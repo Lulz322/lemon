@@ -17,7 +17,7 @@ void	delete_way(t_rooms *way)
 	t_rooms *start;
 
 	start = way;
-	if (way == NULL)
+	if (!way)
 		return ;
 	while (way->next)
 	{

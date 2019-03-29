@@ -50,7 +50,7 @@ bool			parsing_argc(int argc, char **argv)
 		if (ft_strequ(argv[i], "-c"))
 			g_global.color_mode = true;
 		else if (ft_strequ(argv[i], "-w"))
-			g_global.print_pathes = true;
+			g_global.print_ways = true;
 		else if (ft_strequ(argv[i], "-s"))
 			g_global.print_steps = true;
 		else if (ft_strequ(argv[i], "-n"))
